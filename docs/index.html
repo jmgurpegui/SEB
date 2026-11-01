@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EducaMadrid SEB Client - Portal de Exámenes y Descarga</title>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- QRCode.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef6ff',
+              100: '#d9ebff',
+              600: '#0284c7',
+              700: '#0d47a1',
+              800: '#082e6e',
+              900: '#051d47',
+            },
+            crimson: {
+              700: '#b71c1c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Estilos personalizados para proyección en aula */
+    .qr-container canvas, .qr-container img {
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+  <!-- Header Superior Institucional -->
+  <header class="bg-brand-800 text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
+          <svg class="w-7 h-7 text-cyan-300" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">EducaMadrid SEB Client</h1>
+          <p class="text-xs text-cyan-200">Aula Virtual Moodle • Safe Exam Browser Protocol (BYOD)</p>
+        </div>
+      </div>
+      
+      <!-- Navegación por pestañas -->
+      <nav class="flex bg-brand-900/60 p-1 rounded-xl">
+        <button id="tabBtnStudent" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-brand-700 text-white shadow">
+          📱 Vista Alumno (Instalación)
+        </button>
+        <button id="tabBtnTeacher" onclick="switchTab('teacher')" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-cyan-200 hover:text-white">
+          👨‍🏫 Pizarra Docente (Lanzador QR)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+
+    <!-- =============================================================== -->
+    <!-- PESTAÑA 1: VISTA ALUMNO / PROYECTOR DE INSTALACIÓN              -->
+    <!-- =============================================================== -->
+    <section id="tabStudent" class="block space-y-8 animate-fadeIn">
+      
+      <!-- Banner de bienvenida -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Versión Oficial Verificada • Safe Exam Browser 3.7.1
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Cliente SEB - Aula Virtual EducaMadrid
+        </h2>
+        <p class="text-slate-600 text-base sm:text-lg">
+          Navegador seguro obligatorio para cuestionarios y exámenes en dispositivos Android personales (BYOD). Bloquea capturas, IA y cambio de ventana.
+        </p>
+      </div>
+
+      <!-- Grid: Tarjeta de Descarga + QR -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+        
+        <!-- Columna Izquierda: Botón e info de descarga -->
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <svg class="w-6 h-6 text-brand-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descarga Directa de Alta Velocidad
+            </h3>
+            <p class="text-sm text-slate-600">
+              Archivo APK compilado y firmado en la nube mediante GitHub Actions.
+            </p>
+          </div>
+
+          <!-- Botón de Descarga Principal -->
+          <a id="btnDownloadApk" href="#" class="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-xl shadow-lg hover:shadow-xl transition-all transform active:scale-95">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/>
+            </svg>
+            Descargar APK para Android
+          </a>
+
+          <!-- Metadatos de la compilación -->
+          <div class="grid grid-cols-2 gap-3 pt-2 text-xs text-slate-500 border-t border-slate-100">
+            <div>
+              <span class="font-medium text-slate-700">Paquete:</span> educamadrid-seb.apk
+            </div>
+            <div>
+              <span class="font-medium text-slate-700">Requisitos:</span> Android 8.0+ (API 26-34)
+            </div>
+            <div>
+              <span class="font-medium text-slate-700">Distribución:</span> GitHub Releases (Cloud)
+            </div>
+            <div>
+              <span class="font-medium text-slate-700">Seguridad:</span> Kiosk & Anti-Bypass
+            </div>
+          </div>
+
+          <!-- URL exacta editable si se usa fuera de GitHub Pages -->
+          <div class="text-xs text-slate-400 break-all">
+            <span class="font-semibold text-slate-500">Enlace directo:</span>
+            <span id="txtDownloadUrl" class="text-brand-600 select-all">Cargando enlace...</span>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Código QR para Proyección en Aula -->
+        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center flex flex-col items-center justify-center space-y-4">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Escanea con tu cámara móvil para instalar
+          </span>
+          <div id="qrDownloadContainer" class="qr-container bg-white p-4 rounded-xl shadow-sm border border-slate-200 min-h-[220px] flex items-center justify-center">
+            <!-- QR generado dinámicamente con QRCode.js -->
+          </div>
+          <p class="text-xs text-slate-500 max-w-xs">
+            Apunta con la app de Cámara de tu dispositivo Android para iniciar la descarga inmediata.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Guía en 3 Pasos para el Alumno -->
+      <div class="space-y-4">
+        <h3 class="text-xl font-bold text-slate-900 text-center">
+          Guía de Instalación en 3 Pasos (BYOD)
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Paso 1 -->
+          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-3 -top-3 w-12 h-12 bg-brand-50 text-brand-700 font-extrabold text-2xl flex items-center justify-center rounded-full">
+              1
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-2">Descargar APK</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Descarga el archivo <code class="bg-slate-100 px-1 py-0.5 rounded text-brand-700 font-mono text-xs">educamadrid-seb.apk</code> pulsando el botón azul o escaneando el código QR proyectado.
+            </p>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-3 -top-3 w-12 h-12 bg-brand-50 text-brand-700 font-extrabold text-2xl flex items-center justify-center rounded-full">
+              2
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-2">Permitir Instalación</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Abre el archivo desde la barra de notificaciones o la carpeta <em>Descargas</em>. Si el sistema te lo solicita, autoriza <em>"Instalar aplicaciones desconocidas"</em> en Chrome o en tu gestor de archivos.
+            </p>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-3 -top-3 w-12 h-12 bg-brand-50 text-brand-700 font-extrabold text-2xl flex items-center justify-center rounded-full">
+              3
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-2">Fijar Pantalla y Examen</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Abre la app, pulsa en <em>"Escanear QR del Examen"</em> para leer el código de la pizarra docente y acepta el mensaje obligatorio de Android para <strong>Fijar Pantalla</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- PESTAÑA 2: GENERADOR QR DE EXAMEN (PIZARRA DOCENTE)             -->
+    <!-- =============================================================== -->
+    <section id="tabTeacher" class="hidden space-y-6 animate-fadeIn">
+      
+      <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+        
+        <div class="border-b border-slate-100 pb-4 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+              <span>👨‍🏫</span> Panel Docente: Generador de QR para Pizarra
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">
+              Pega la URL del cuestionario de Moodle EducaMadrid. Se convertirá automáticamente al protocolo <code class="font-bold text-brand-700">sebs://</code> para arranque seguro.
+            </p>
+          </div>
+          <button onclick="toggleFullScreen()" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg border border-brand-200 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+            </svg>
+            Modo Pizarra Gigante
+          </button>
+        </div>
+
+        <!-- Entrada de URL del Cuestionario -->
+        <div class="space-y-3">
+          <label for="inputMoodleUrl" class="block text-sm font-bold text-slate-700">
+            URL del Examen en Aula Virtual EducaMadrid:
+          </label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="url" id="inputMoodleUrl" 
+              value="https://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=12845" 
+              placeholder="https://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=..." 
+              class="flex-1 px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-700 focus:border-brand-700 text-sm font-mono"
+              oninput="updateExamQr()">
+            <button onclick="updateExamQr()" class="px-6 py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm rounded-xl shadow transition">
+              Actualizar QR
+            </button>
+          </div>
+          
+          <!-- Enlace SEBS normalizado resultante -->
+          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+            <div class="truncate mr-2">
+              <span class="font-semibold text-slate-500">Esquema SEB activo:</span>
+              <span id="lblSebsUrl" class="font-mono text-brand-700 font-bold select-all"></span>
+            </div>
+            <button onclick="copySebsUrl()" class="px-3 py-1 bg-white border border-slate-300 hover:bg-slate-100 rounded text-slate-700 font-medium whitespace-nowrap transition">
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Proyector de Código QR Gigante -->
+        <div id="projectorContainer" class="bg-gradient-to-b from-slate-900 to-slate-950 text-white p-8 sm:p-12 rounded-2xl flex flex-col items-center justify-center space-y-6 text-center transition-all">
+          <div class="space-y-1">
+            <span class="px-3 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-bold rounded-full uppercase tracking-wider border border-cyan-400/30">
+              Proyección para Alumnos
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+              Escanea para Comenzar el Examen
+            </h3>
+            <p class="text-sm text-slate-300 max-w-md">
+              Abre el cliente EducaMadrid SEB y pulsa <strong>"Escanear QR del Examen"</strong> o apunta con la cámara de tu teléfono.
+            </p>
+          </div>
+
+          <!-- Canvas / Contenedor del QR de Examen -->
+          <div id="qrExamContainer" class="qr-container bg-white p-5 sm:p-7 rounded-2xl shadow-2xl min-h-[300px] flex items-center justify-center">
+            <!-- QR generado con qrcodejs -->
+          </div>
+
+          <div class="text-xs text-slate-400 max-w-lg space-y-1">
+            <p>🔒 La app verificará la cabecera criptográfica <code class="text-cyan-300">X-SafeExamBrowser-RequestHash</code> y activará el modo Kiosk antes de mostrar las preguntas.</p>
+            <p>Clave de salida docente por defecto: <code class="bg-white/10 px-1 py-0.5 rounded text-amber-300 font-mono font-bold">8426</code></p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer Institucional -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4 space-y-2">
+      <p class="font-medium text-slate-700">EducaMadrid SEB Client • Comunidad de Madrid</p>
+      <p>Diseñado para auditoría y evaluación segura sin fugas en entornos escolares BYOD.</p>
+    </div>
+  </footer>
+
+  <!-- Lógica JavaScript Dinámica -->
+  <script>
+    // 1. Detección automática del repositorio GitHub para el enlace de descarga directa
+    function getRepoCoordinates() {
+      const hostname = window.location.hostname;
+      const pathname = window.location.pathname.split('/').filter(Boolean);
+
+      // Si está en GitHub Pages (ej: usuario.github.io/repo-name/)
+      if (hostname.endsWith('.github.io') && pathname.length >= 1) {
+        const user = hostname.split('.')[0];
+        const repo = pathname[0];
+        return { user, repo, isGitHubPages: true };
+      }
+
+      // Parámetros de consulta opcionales ?repo=usuario/repositorio
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('repo')) {
+        const parts = urlParams.get('repo').split('/');
+        if (parts.length === 2) return { user: parts[0], repo: parts[1], isGitHubPages: false };
+      }
+
+      // Fallback predeterminado configurado para el repositorio oficial
+      return { user: 'jmgurpegui', repo: 'SEB', isGitHubPages: false };
+    }
+
+    const repoInfo = getRepoCoordinates();
+    const downloadUrl = `https://github.com/${repoInfo.user}/${repoInfo.repo}/releases/latest/download/educamadrid-seb.apk`;
+
+    // Actualizar elementos de la vista de descarga
+    const btnDownload = document.getElementById('btnDownloadApk');
+    const txtDownloadUrl = document.getElementById('txtDownloadUrl');
+    btnDownload.href = downloadUrl;
+    txtDownloadUrl.textContent = downloadUrl;
+
+    // Generar QR de descarga con QRCode.js
+    let qrDownloadInstance = null;
+    function renderDownloadQr() {
+      const container = document.getElementById('qrDownloadContainer');
+      container.innerHTML = '';
+      qrDownloadInstance = new QRCode(container, {
+        text: downloadUrl,
+        width: 200,
+        height: 200,
+        colorDark: "#0d47a1",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    // 2. Generador de QR para Examen Docente
+    let qrExamInstance = null;
+    function convertToSebsScheme(url) {
+      let raw = url.trim();
+      if (!raw) return '';
+      if (raw.toLowerCase().startsWith('sebs://')) return raw;
+      if (raw.toLowerCase().startsWith('seb://')) return 'sebs://' + raw.substring(6);
+      if (raw.toLowerCase().startsWith('https://')) return 'sebs://' + raw.substring(8);
+      if (raw.toLowerCase().startsWith('http://')) return 'seb://' + raw.substring(7);
+      return 'sebs://' + raw;
+    }
+
+    function updateExamQr() {
+      const input = document.getElementById('inputMoodleUrl').value;
+      const sebsUrl = convertToSebsScheme(input);
+      document.getElementById('lblSebsUrl').textContent = sebsUrl || '(Introduce una URL de examen)';
+
+      const container = document.getElementById('qrExamContainer');
+      container.innerHTML = '';
+
+      if (!sebsUrl) return;
+
+      // Tamaño adaptado para pantalla o proyección
+      const size = window.innerWidth > 640 ? 280 : 220;
+      qrExamInstance = new QRCode(container, {
+        text: sebsUrl,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L // Nivel L para máxima legibilidad de URLs largas en pantalla
+      });
+    }
+
+    function copySebsUrl() {
+      const text = document.getElementById('lblSebsUrl').textContent;
+      if (text && text.startsWith('seb')) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('Enlace copiado al portapapeles: ' + text);
+        });
+      }
+    }
+
+    function toggleFullScreen() {
+      const projector = document.getElementById('projectorContainer');
+      if (!document.fullscreenElement) {
+        projector.requestFullscreen?.() || projector.webkitRequestFullscreen?.();
+      } else {
+        document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+      }
+    }
+
+    // 3. Control de pestañas
+    function switchTab(tab) {
+      const tabStudent = document.getElementById('tabStudent');
+      const tabTeacher = document.getElementById('tabTeacher');
+      const btnStudent = document.getElementById('tabBtnStudent');
+      const btnTeacher = document.getElementById('tabBtnTeacher');
+
+      if (tab === 'student') {
+        tabStudent.classList.remove('hidden');
+        tabTeacher.classList.add('hidden');
+        btnStudent.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-brand-700 text-white shadow";
+        btnTeacher.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-cyan-200 hover:text-white";
+      } else {
+        tabStudent.classList.add('hidden');
+        tabTeacher.classList.remove('hidden');
+        btnTeacher.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-brand-700 text-white shadow";
+        btnStudent.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-cyan-200 hover:text-white";
+        // Si no se ha dibujado el QR de examen, forzar actualización
+        updateExamQr();
+      }
+    }
+
+    // Inicialización al cargar la ventana
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDownloadQr();
+      updateExamQr();
+    });
+  </script>
+</body>
+</html>

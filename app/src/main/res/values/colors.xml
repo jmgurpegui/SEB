@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paleta Institucional EducaMadrid y Seguridad -->
+    <color name="primary_educamadrid">#0D47A1</color>
+    <color name="primary_dark">#082E6E</color>
+    <color name="secondary_accent">#00BCD4</color>
+    
+    <!-- Estados de Seguridad y Kiosk -->
+    <color name="security_red">#D32F2F</color>
+    <color name="security_red_dark">#B71C1C</color>
+    <color name="security_green">#2E7D32</color>
+    <color name="security_amber">#F57C00</color>
+    <color name="surface_dark">#121212</color>
+    <color name="surface_card">#1E1E1E</color>
+    
+    <!-- Neutros y Textos -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_light">#E0E0E0</color>
+    <color name="bg_light">#F5F7FA</color>
+    <color name="border_light">#E2E8F0</color>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EducaMadrid SEB Client</string>
+    <string name="title_home">Navegador Seguro de Exámenes</string>
+    <string name="subtitle_home">Aula Virtual EducaMadrid (Moodle) • Safe Exam Browser Protocol</string>
+
+    <!-- Estado Inicial / Entrada -->
+    <string name="label_url_input">URL del Examen en Aula Virtual</string>
+    <string name="hint_url_input">https://aulavirtual33.educamadrid.org/...</string>
+    <string name="btn_start_exam">Comenzar Examen Seguro</string>
+    <string name="info_security_notice">Al iniciar el examen se activará el modo Fijar Pantalla (Kiosk), se bloqueará el portapapeles, las capturas de pantalla y el cambio de aplicación.</string>
+
+    <!-- Bloqueo de Screen Pinning (Pausa) -->
+    <string name="title_screen_unpinned">EXAMEN PAUSADO</string>
+    <string name="msg_screen_unpinned">Es obligatorio aceptar \'Fijar pantalla\' para visualizar el cuestionario.</string>
+    <string name="btn_pin_screen_now">Fijar pantalla ahora</string>
+
+    <!-- Infracción por Pérdida de Foco o Cambio de Ventana -->
+    <string name="title_infraction">INFRACCIÓN DETECTADA</string>
+    <string name="msg_infraction_detected">Cambio de ventana o superposición registrada a las %1$s</string>
+    <string name="label_infraction_count">Total de infracciones registradas: %1$d</string>
+    <string name="info_teacher_unlock_required">El examen ha sido suspendido cautelarmente. Avise al docente para que introduzca el PIN de desbloqueo supervisado.</string>
+    <string name="btn_teacher_unlock">Desbloquear con PIN Docente</string>
+
+    <!-- Diálogo de PIN Docente -->
+    <string name="dialog_teacher_title">Autorización Docente</string>
+    <string name="dialog_teacher_hint">Introduce el PIN de 4 dígitos</string>
+    <string name="btn_resume_exam">Reanudar Examen</string>
+    <string name="btn_exit_exam">Finalizar y Salir</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="error_invalid_pin">PIN docente incorrecto</string>
+
+    <!-- Estado y Carga -->
+    <string name="loading_exam">Estableciendo conexión segura con Moodle EducaMadrid…</string>
+    <string name="status_locked">Modo Kiosk Activo</string>
+</resources>
