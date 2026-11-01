@@ -207,14 +207,6 @@ class MainActivity : AppCompatActivity() {
             isLongClickable = false
             isHapticFeedbackEnabled = false
 
-            // Bloquea el menú de selección de texto flotante del sistema (Copy/Paste/Share/AI)
-            customSelectionActionModeCallback = object : ActionMode.Callback {
-                override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
-                override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
-                override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean = false
-                override fun onDestroyActionMode(mode: ActionMode?) {}
-            }
-
             settings.apply {
                 javaScriptEnabled = true
                 domStorageEnabled = true
@@ -514,6 +506,14 @@ class MainActivity : AppCompatActivity() {
             binding.etExamUrl.setText(normalizedUrl)
             startExam(normalizedUrl)
         }
+    }
+
+    override fun onActionModeStarted(mode: ActionMode?) {
+        if (isExamActive) {
+            // Anula de inmediato cualquier menú flotante contextual (copiar/pegar/IA)
+            mode?.finish()
+        }
+        super.onActionModeStarted(mode)
     }
 
     override fun onDestroy() {
