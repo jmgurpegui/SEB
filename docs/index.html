@@ -525,6 +525,37 @@
             </div>
           </div>
 
+          <!-- Parámetros de Seguridad de Sesión: PIN Dinámico y Quit URL -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-700" data-i18n="sec_params_title">Seguridad de la Sesión</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Anti-Fraude</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="inputSessionPin" class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="lbl_session_pin">
+                  PIN de Salida (4 dígitos):
+                </label>
+                <input type="text" id="inputSessionPin" maxlength="4" pattern="[0-9]{4}" value="8426"
+                  class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-sm font-bold text-center tracking-widest text-brand-800 focus:ring-2 focus:ring-brand-700"
+                  oninput="processExamLink()">
+              </div>
+              <div class="flex items-center pt-2 sm:pt-4">
+                <label class="flex items-start gap-2 cursor-pointer">
+                  <input type="checkbox" id="chkAutoQuit" checked class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" onchange="processExamLink()">
+                  <span class="text-xs text-slate-700 leading-tight">
+                    <strong data-i18n="lbl_auto_quit_title">Desbloqueo automático al entregar</strong><br>
+                    <span class="text-[10px] text-slate-500" data-i18n="lbl_auto_quit_desc">Quit URL en Moodle sin pedir PIN</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-500 italic" data-i18n="session_pin_note">
+              * El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.
+            </p>
+          </div>
+
           <!-- Protocolo Generado sebs:// -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between text-xs">
@@ -550,11 +581,15 @@
               <span data-i18n="teacher_pin_heading">PIN Docente de Desbloqueo</span>
             </div>
             <p class="text-[11px] text-amber-700 leading-relaxed" data-i18n="teacher_pin_desc">
-              Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN docente por defecto:
+              Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN de sesión configurado arriba (o el PIN maestro de respaldo):
             </p>
             <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-amber-200">
-              <span class="text-xs text-slate-500" data-i18n="lbl_default_pin">PIN Maestro:</span>
-              <code class="text-base font-black font-mono text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded">8426</code>
+              <span class="text-xs text-slate-500" data-i18n="lbl_active_pin">PIN de Sesión Activo:</span>
+              <code id="displayActivePin" class="text-base font-black font-mono text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded">8426</code>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
+              <span>PIN Maestro de Respaldo:</span>
+              <code class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">8426</code>
             </div>
           </div>
         </div>
@@ -819,6 +854,12 @@
         btn_fullscreen_board: "Modo Proyector Pantalla Completa",
         lbl_input_url: "URL del Examen en Aula Virtual EducaMadrid:",
         btn_update_qr: "Actualizar QR",
+        sec_params_title: "Seguridad de la Sesión",
+        lbl_session_pin: "PIN de Salida (4 dígitos):",
+        lbl_auto_quit_title: "Desbloqueo automático al entregar",
+        lbl_auto_quit_desc: "Quit URL en Moodle sin pedir PIN",
+        session_pin_note: "* El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.",
+        lbl_active_pin: "PIN de Sesión Activo:",
         lbl_sebs_ready: "Protocolo SEBS Generado:",
         btn_copy: "Copiar",
         btn_test_seb: "Lanzar en SEB Local",
@@ -902,6 +943,12 @@
         btn_fullscreen_board: "Fullscreen Beamer Mode",
         lbl_input_url: "EducaMadrid Moodle Quiz URL:",
         btn_update_qr: "Update QR",
+        sec_params_title: "Session Security Parameters",
+        lbl_session_pin: "Exit PIN (4 digits):",
+        lbl_auto_quit_title: "Automatic unlock on submission",
+        lbl_auto_quit_desc: "Quit URL in Moodle without PIN",
+        session_pin_note: "* The PIN is sent encrypted as SHA-256 in the QR and stripped from the URL by the app before loading Moodle.",
+        lbl_active_pin: "Active Session PIN:",
         lbl_sebs_ready: "Generated SEBS Protocol:",
         btn_copy: "Copy",
         btn_test_seb: "Launch in Local SEB",
@@ -1116,25 +1163,57 @@
       return 'sebs://' + raw;
     }
 
-    function processExamLink() {
+    // Cálculo criptográfico SHA-256 en navegador para el PIN de sesión
+    async function sha256Hex(text) {
+      if (window.crypto && crypto.subtle) {
+        const msgUint8 = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      return 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0';
+    }
+
+    async function processExamLink() {
       const input = document.getElementById('inputExamUrl').value;
-      const sebsUrl = convertToSebs(input);
+      const baseSebsUrl = convertToSebs(input);
       
       const displaySebs = document.getElementById('displaySebsUrl');
       const btnTest = document.getElementById('btnTestLaunch');
-      
-      if (displaySebs) displaySebs.textContent = sebsUrl || '(Introduce una URL válida de Moodle)';
-      if (btnTest) btnTest.href = sebsUrl || '#';
-
       const container = document.getElementById('qrProjectorContainer');
+      
+      if (!baseSebsUrl) {
+        if (displaySebs) displaySebs.textContent = '(Introduce una URL válida de Moodle)';
+        if (btnTest) btnTest.href = '#';
+        if (container) container.innerHTML = '';
+        return;
+      }
+
+      // Parámetros de PIN dinámico y Auto Quit
+      const pinInput = document.getElementById('inputSessionPin');
+      const sessionPin = (pinInput ? pinInput.value.trim() : '') || '8426';
+      
+      const displayActivePin = document.getElementById('displayActivePin');
+      if (displayActivePin) displayActivePin.textContent = sessionPin;
+
+      const pinHash = await sha256Hex(sessionPin);
+      const isAutoQuit = document.getElementById('chkAutoQuit') ? document.getElementById('chkAutoQuit').checked : true;
+
+      const separator = baseSebsUrl.includes('?') ? '&' : '?';
+      let fullSebsUrl = `${baseSebsUrl}${separator}seb_pin_hash=${pinHash}`;
+      if (isAutoQuit) {
+        fullSebsUrl += '&auto_quit=1';
+      }
+      
+      if (displaySebs) displaySebs.textContent = fullSebsUrl;
+      if (btnTest) btnTest.href = fullSebsUrl;
+
       if (!container) return;
       container.innerHTML = '';
 
-      if (!sebsUrl) return;
-
       const size = window.innerWidth > 640 ? 260 : 200;
       qrProjectorInstance = new QRCode(container, {
-        text: sebsUrl,
+        text: fullSebsUrl,
         width: size,
         height: size,
         colorDark: "#000000",

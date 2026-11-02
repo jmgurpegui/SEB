@@ -7,12 +7,11 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.webkit.CookieManager
@@ -37,10 +36,14 @@ import java.util.Locale
  * MainActivity: EducaMadrid Safe Exam Browser Client.
  *
  * Implementa seguridad estricta para exámenes en Moodle (Aula Virtual EducaMadrid):
+ * - Detección y bloqueo activo de emuladores de PC.
  * - FLAG_SECURE contra capturas y grabación de pantalla.
  * - Screen Pinning (startLockTask) con bucle activo de supervisión.
  * - Registro de infracciones en pérdida de foco y cambio de ventana.
  * - Inyección de cabeceras criptográficas SEB (RequestHash y ConfigKeyHash).
+ * - PIN dinámico de sesión transmitido por QR con SHA-256 (y PIN maestro de respaldo).
+ * - Whitelist estricta de dominios (*.educa.madrid.org).
+ * - Detección automática de entrega de examen (Quit URL / review.php) sin pedir PIN.
  * - User-Agent SEB 3.7.1.
  * - Inyección JS anti-copia, anti-selección y bloqueo total de portapapeles.
  */
@@ -63,10 +66,14 @@ class MainActivity : AppCompatActivity() {
     private var isExitingWithTeacherPin: Boolean = false
     private var infractionCount: Int = 0
 
+    // Parámetros de sesión configurados dinámicamente por QR o Intent
+    private var currentSessionPinHash: String? = null
+    private var isAutoQuitEnabled: Boolean = false
+    private var hasEnteredQuizAttempt: Boolean = false
+
     // Constantes criptográficas SEB configurables
     private var currentBrowserExamKey: String = SebCryptoUtils.DEFAULT_BROWSER_EXAM_KEY
     private var currentConfigKeyHash: String = SebCryptoUtils.DEFAULT_CONFIG_KEY_HASH
-    private var teacherPin: String = SebCryptoUtils.DEFAULT_TEACHER_PIN
 
     // Bucle de supervisión continua de Screen Pinning (cada 1000 ms)
     private val lockTaskHandler = Handler(Looper.getMainLooper())
@@ -86,9 +93,7 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val scannedUrl = result.data?.getStringExtra("SCAN_RESULT")
             if (!scannedUrl.isNullOrBlank()) {
-                val normalized = SebCryptoUtils.normalizeSebUrl(scannedUrl)
-                binding.etExamUrl.setText(normalized)
-                startExam(normalized)
+                startExam(scannedUrl)
             }
         }
     }
@@ -103,6 +108,13 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         super.onCreate(savedInstanceState)
+
+        // 2. DETECCIÓN Y BLOQUEO DE EMULADORES DE PC
+        if (isRunningOnEmulator()) {
+            showEmulatorBlockedDialog()
+            return
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -112,6 +124,52 @@ class MainActivity : AppCompatActivity() {
 
         // Procesar posibles Deep Links recibidos en el arranque
         handleIntent(intent)
+    }
+
+    /**
+     * Detecta si la aplicación se está ejecutando dentro de un emulador de PC
+     * (BlueStacks, Genymotion, Windows Subsystem for Android, Android Studio Emulator, etc.)
+     */
+    private fun isRunningOnEmulator(): Boolean {
+        val fingerprint = Build.FINGERPRINT.lowercase(Locale.getDefault())
+        val model = Build.MODEL.lowercase(Locale.getDefault())
+        val manufacturer = Build.MANUFACTURER.lowercase(Locale.getDefault())
+        val hardware = Build.HARDWARE.lowercase(Locale.getDefault())
+        val product = Build.PRODUCT.lowercase(Locale.getDefault())
+        val board = Build.BOARD.lowercase(Locale.getDefault())
+        val brand = Build.BRAND.lowercase(Locale.getDefault())
+        val device = Build.DEVICE.lowercase(Locale.getDefault())
+
+        return fingerprint.contains("generic") ||
+                fingerprint.startsWith("unknown") ||
+                model.contains("google_sdk") ||
+                model.contains("emulator") ||
+                model.contains("android sdk built for") ||
+                model.contains("sdk") ||
+                hardware.contains("goldfish") ||
+                hardware.contains("ranchu") ||
+                product.contains("sdk") ||
+                product.contains("google_sdk") ||
+                product.contains("sdk_x86") ||
+                product.contains("vbox86p") ||
+                product.contains("emulator") ||
+                manufacturer.contains("genymotion") ||
+                (brand.startsWith("generic") && device.startsWith("generic")) ||
+                board == "goldfish"
+    }
+
+    /**
+     * Muestra alerta bloqueante si se ejecuta en emulador y cierra la aplicación.
+     */
+    private fun showEmulatorBlockedDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Dispositivo no compatible")
+            .setMessage("No se permite ejecutar EducaMadrid SEB Client en emuladores de PC para garantizar la integridad y seguridad del examen.\n\nPor favor, utiliza un teléfono móvil o tablet física.")
+            .setCancelable(false)
+            .setPositiveButton("Cerrar") { _, _ ->
+                finishAffinity()
+            }
+            .show()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -176,6 +234,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnTeacherExit.setOnClickListener {
             showTeacherPinDialog()
         }
+
+        binding.btnAutoQuit.setOnClickListener {
+            triggerAutoQuitExit()
+        }
     }
 
     /**
@@ -187,8 +249,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE")
             qrScanLauncher.launch(intent)
         } catch (_: Exception) {
-            // Si el dispositivo no cuenta con lector ZXing integrado,
-            // instruir al alumno para escanear con la cámara nativa de Android
             MaterialAlertDialogBuilder(this)
                 .setTitle("Escanear QR de la Pizarra")
                 .setMessage("Apunta con la aplicación de Cámara de tu dispositivo al código QR proyectado por el docente en la pizarra.\n\nAl reconocer el enlace 'sebs://', tu dispositivo ofrecerá abrirlo directamente con esta aplicación.")
@@ -211,6 +271,7 @@ class MainActivity : AppCompatActivity() {
                 javaScriptEnabled = true
                 domStorageEnabled = true
                 databaseEnabled = true
+                @Suppress("DEPRECATION")
                 saveFormData = false
                 setSupportZoom(false)
                 builtInZoomControls = false
@@ -244,13 +305,33 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // WebViewClient con inyección criptográfica SEB y script anti-fraude
+            // WebViewClient con inyección criptográfica SEB, whitelist de dominios y script anti-fraude
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
                     request: WebResourceRequest?
                 ): Boolean {
                     val targetUrl = request?.url?.toString() ?: return false
+
+                    // 1. Detección de Quit URL / seb://quit / sebs://quit
+                    if (targetUrl.startsWith("seb://quit", ignoreCase = true) ||
+                        targetUrl.startsWith("sebs://quit", ignoreCase = true) ||
+                        targetUrl.contains("quit.php", ignoreCase = true)
+                    ) {
+                        triggerAutoQuitExit()
+                        return true
+                    }
+
+                    // 2. Whitelist estricta de dominios de EducaMadrid (*.educa.madrid.org)
+                    if (!SebCryptoUtils.isAllowedDomain(targetUrl)) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Navegación bloqueada: Solo se permite acceso a dominios autorizados (*.educa.madrid.org)",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return true
+                    }
+
                     loadUrlWithSebHeaders(targetUrl)
                     return true
                 }
@@ -258,12 +339,36 @@ class MainActivity : AppCompatActivity() {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
                     binding.tvExamHeaderTitle.text = url ?: getString(R.string.status_locked)
+                    url?.let { checkAutoQuitProgression(it) }
                 }
 
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     injectAntiAiScript(view)
+                    url?.let { checkAutoQuitProgression(it) }
                 }
+            }
+        }
+    }
+
+    /**
+     * Evalúa el progreso del examen en Moodle para activar el botón verde de salida automática.
+     */
+    private fun checkAutoQuitProgression(url: String) {
+        val lower = url.lowercase(Locale.getDefault())
+
+        // El alumno ha entrado en la resolución del intento
+        if (lower.contains("attempt.php") || lower.contains("processattempt.php")) {
+            hasEnteredQuizAttempt = true
+        }
+
+        // Si auto_quit está habilitado y el alumno ha navegado a la página de revisión o finalización
+        if (hasEnteredQuizAttempt && isAutoQuitEnabled) {
+            if (lower.contains("review.php") ||
+                lower.contains("view.php") ||
+                lower.contains("summary.php")
+            ) {
+                binding.btnAutoQuit.visibility = View.VISIBLE
             }
         }
     }
@@ -302,17 +407,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Inicia el modo de examen seguro: ancla la pantalla y lanza la URL.
+     * Inicia el modo de examen seguro:
+     * - Extrae y almacena en memoria seb_pin_hash y auto_quit.
+     * - Elimina estos parámetros de la URL para no alterar el cálculo de hashes de Moodle.
+     * - Ancla la pantalla y lanza la URL limpia.
      */
     private fun startExam(rawUrl: String) {
-        val url = SebCryptoUtils.normalizeSebUrl(rawUrl)
+        // Extracción y limpieza de parámetros de sesión
+        val sessionConfig = SebCryptoUtils.extractAndCleanSessionParams(rawUrl)
+        currentSessionPinHash = sessionConfig.sessionPinHash
+        isAutoQuitEnabled = sessionConfig.autoQuitEnabled
+        hasEnteredQuizAttempt = false
+
+        val cleanUrl = sessionConfig.cleanUrl
+
         isExamActive = true
         isExitingWithTeacherPin = false
 
+        binding.btnAutoQuit.visibility = View.GONE
         binding.layoutHome.visibility = View.GONE
         binding.layoutPausedScreen.visibility = View.GONE
         binding.layoutInfractionScreen.visibility = View.GONE
         binding.layoutExam.visibility = View.VISIBLE
+
+        binding.etExamUrl.setText(cleanUrl)
 
         // Solicita el anclaje de pantalla (Screen Pinning / Kiosk)
         try {
@@ -321,8 +439,8 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        // Carga inicial con cabeceras SEB
-        loadUrlWithSebHeaders(url)
+        // Carga inicial con cabeceras SEB y URL limpia
+        loadUrlWithSebHeaders(cleanUrl)
 
         // Arranca el bucle de verificación de 1000 ms
         lockTaskHandler.removeCallbacks(lockTaskCheckRunnable)
@@ -339,13 +457,11 @@ class MainActivity : AppCompatActivity() {
         val isPinned = (lockMode != ActivityManager.LOCK_TASK_MODE_NONE)
 
         if (!isPinned) {
-            // El alumno desancló la pantalla o pulsó "No, gracias"
             if (binding.layoutInfractionScreen.visibility != View.VISIBLE) {
                 binding.examWebView.visibility = View.GONE
                 binding.layoutPausedScreen.visibility = View.VISIBLE
             }
         } else {
-            // Pantalla correctamente anclada
             if (binding.layoutInfractionScreen.visibility != View.VISIBLE) {
                 binding.layoutPausedScreen.visibility = View.GONE
                 binding.examWebView.visibility = View.VISIBLE
@@ -378,8 +494,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Registra una infracción de seguridad y bloquea la interfaz de examen.
      */
-    private fun registerInfraction(reason: String) {
-        // Vaciado preventivo de portapapeles
+    private fun registerInfraction(@Suppress("UNUSED_PARAMETER") reason: String) {
         clearClipboard()
 
         infractionCount++
@@ -405,6 +520,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Muestra el diálogo de control docente para desbloquear infracciones o salir del examen.
+     * Valida el PIN contra el PIN de sesión dinámico (SHA-256) o el PIN maestro ("8426").
      */
     private fun showTeacherPinDialog() {
         isTeacherDialogShowing = true
@@ -427,8 +543,8 @@ class MainActivity : AppCompatActivity() {
 
             // Reanudar examen
             positiveBtn.setOnClickListener {
-                val inputPin = dialogBinding.etTeacherPin.text?.toString()?.trim()
-                if (inputPin == teacherPin) {
+                val inputPin = dialogBinding.etTeacherPin.text?.toString()?.trim() ?: ""
+                if (SebCryptoUtils.isPinValid(inputPin, currentSessionPinHash)) {
                     dialogBinding.tvPinError.visibility = View.GONE
                     dialog.dismiss()
                     isTeacherDialogShowing = false
@@ -441,8 +557,8 @@ class MainActivity : AppCompatActivity() {
 
             // Finalizar y salir limpiamente
             negativeBtn.setOnClickListener {
-                val inputPin = dialogBinding.etTeacherPin.text?.toString()?.trim()
-                if (inputPin == teacherPin) {
+                val inputPin = dialogBinding.etTeacherPin.text?.toString()?.trim() ?: ""
+                if (SebCryptoUtils.isPinValid(inputPin, currentSessionPinHash)) {
                     dialogBinding.tvPinError.visibility = View.GONE
                     dialog.dismiss()
                     isTeacherDialogShowing = false
@@ -495,6 +611,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Salida automática al entregar el examen (auto_quit activo):
+     * Libera Screen Pinning, borra cookies de sesión y cierra la app sin pedir PIN.
+     */
+    private fun triggerAutoQuitExit() {
+        isExitingWithTeacherPin = true
+        isExamActive = false
+        lockTaskHandler.removeCallbacks(lockTaskCheckRunnable)
+
+        try {
+            stopLockTask()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookies(null)
+            cookieManager.flush()
+            binding.examWebView.clearCache(true)
+            binding.examWebView.loadUrl("about:blank")
+        } catch (_: Exception) {}
+
+        Toast.makeText(this, "Examen entregado correctamente. Sesión finalizada.", Toast.LENGTH_LONG).show()
+        finishAffinity()
+    }
+
+    /**
      * Procesa Deep Links con esquemas seb:// y sebs://
      */
     private fun handleIntent(intent: Intent?) {
@@ -502,15 +645,12 @@ class MainActivity : AppCompatActivity() {
         val scheme = data.scheme?.lowercase(Locale.getDefault())
 
         if (scheme == "seb" || scheme == "sebs") {
-            val normalizedUrl = SebCryptoUtils.normalizeSebUrl(data.toString())
-            binding.etExamUrl.setText(normalizedUrl)
-            startExam(normalizedUrl)
+            startExam(data.toString())
         }
     }
 
     override fun onActionModeStarted(mode: ActionMode?) {
         if (isExamActive) {
-            // Anula de inmediato cualquier menú flotante contextual (copiar/pegar/IA)
             mode?.finish()
         }
         super.onActionModeStarted(mode)

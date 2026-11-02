@@ -53,19 +53,26 @@ jobs:
       - name: Dar permisos de ejecución a Gradle Wrapper
         run: chmod +x gradlew
 
-      - name: Compilar APK en modo Release
-        run: ./gradlew assembleRelease --stacktrace
+      - name: Ejecutar pruebas unitarias
+        run: ./gradlew test --stacktrace
+
+      - name: Compilar APK y AAB Bundle en modo Release
+        run: ./gradlew assembleRelease bundleRelease --stacktrace
         env:
           KEYSTORE_PASSWORD: educamadrid
           KEY_ALIAS: educamadrid
           KEY_PASSWORD: educamadrid
 
-      - name: Preparar artefacto educamadrid-seb.apk
+      - name: Preparar artefactos educamadrid-seb.apk y educamadrid-seb-playstore.aab
         run: |
           mkdir -p dist
           APK_PATH=$(ls app/build/outputs/apk/release/*-release.apk app/build/outputs/apk/release/*.apk 2>/dev/null | head -n 1)
           echo "APK generado encontrado en: $APK_PATH"
           cp "$APK_PATH" dist/educamadrid-seb.apk
+
+          AAB_PATH=$(ls app/build/outputs/bundle/release/*-release.aab app/build/outputs/bundle/release/*.aab 2>/dev/null | head -n 1)
+          echo "AAB Bundle generado encontrado en: $AAB_PATH"
+          cp "$AAB_PATH" dist/educamadrid-seb-playstore.aab
           ls -lh dist/
 
       - name: Publicar en GitHub Releases (tag 'latest')
@@ -78,13 +85,16 @@ jobs:
             
             Versión oficial compilada, firmada y optimizada en la nube mediante GitHub Actions.
             
-            - **Archivo APK:** `educamadrid-seb.apk`
+            - **Archivo APK:** `educamadrid-seb.apk` (Instalación directa en dispositivo)
+            - **Bundle Play Store:** `educamadrid-seb-playstore.aab` (Para Google Play Console)
             - **Compatibilidad:** Android 8.0 a Android 14+ (API 26-34)
             - **Protocolo:** Safe Exam Browser (SEB) v3.7.1
-            - **Seguridad:** Kiosk (Screen Pinning), anti-capturas (`FLAG_SECURE`), anti-IA y bloqueo de portapapeles.
+            - **Seguridad:** Kiosk (Screen Pinning), anti-emulador, anti-capturas (`FLAG_SECURE`), PIN dinámico de sesión, whitelist de dominios y desbloqueo automático de examen entregado.
             
             *Enlace directo de descarga permanente para alumnos y docentes.*
-          files: dist/educamadrid-seb.apk
+          files: |
+            dist/educamadrid-seb.apk
+            dist/educamadrid-seb-playstore.aab
           prerelease: false
           make_latest: true
         env:

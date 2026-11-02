@@ -24,5 +24,7 @@ apple/
 *.msi
 *Zone.Identifier
 *.apk
+*.aab
+*.keystore
 dist/
 

@@ -1,10 +1,10 @@
 package es.educamadrid.seb.client
 
-import android.net.Uri
+import java.net.URI
 import java.security.MessageDigest
 
 /**
- * Utilidades criptográficas para el protocolo Safe Exam Browser (SEB).
+ * Utilidades criptográficas y de sesión para el protocolo Safe Exam Browser (SEB).
  * Cumple con la especificación de verificación de cabeceras en Moodle Quiz SEB Plugin.
  */
 object SebCryptoUtils {
@@ -23,9 +23,18 @@ object SebCryptoUtils {
         "f0e1d2c3b4a5968778695a4b3c2d1e0f0123456789abcdef0123456789abcdef"
 
     /**
-     * PIN Docente por defecto para desbloqueo de emergencia e infracciones.
+     * PIN Docente maestro de respaldo para desbloqueo de emergencia e infracciones.
      */
     const val DEFAULT_TEACHER_PIN: String = "8426"
+
+    /**
+     * Configuración de sesión extraída de los parámetros del QR / Intent.
+     */
+    data class SebSessionConfig(
+        val cleanUrl: String,
+        val sessionPinHash: String?,
+        val autoQuitEnabled: Boolean
+    )
 
     /**
      * Limpia el fragmento (#...) de una URL según el estándar SEB.
@@ -88,6 +97,105 @@ object SebCryptoUtils {
                 "https://$trimmed"
             }
             else -> trimmed
+        }
+    }
+
+    /**
+     * Extrae seb_pin_hash y auto_quit de la URL y los elimina de la misma
+     * para que no alteren el cálculo del RequestHash ni la petición enviada a Moodle.
+     */
+    fun extractAndCleanSessionParams(rawUrl: String): SebSessionConfig {
+        val normalized = normalizeSebUrl(rawUrl)
+
+        // Extraer fragmento si existe
+        val hashIndex = normalized.indexOf('#')
+        val fragment = if (hashIndex != -1) normalized.substring(hashIndex) else ""
+        val urlWithoutFragment = if (hashIndex != -1) normalized.substring(0, hashIndex) else normalized
+
+        val queryIndex = urlWithoutFragment.indexOf('?')
+        if (queryIndex == -1) {
+            return SebSessionConfig(
+                cleanUrl = normalized,
+                sessionPinHash = null,
+                autoQuitEnabled = false
+            )
+        }
+
+        val baseUrl = urlWithoutFragment.substring(0, queryIndex)
+        val queryString = urlWithoutFragment.substring(queryIndex + 1)
+        var sessionPinHash: String? = null
+        var autoQuit = false
+        val remainingParams = mutableListOf<String>()
+
+        for (param in queryString.split('&')) {
+            if (param.isBlank()) continue
+            val parts = param.split('=', limit = 2)
+            val key = parts[0].trim()
+            val value = if (parts.size > 1) parts[1].trim() else ""
+            when (key) {
+                "seb_pin_hash" -> {
+                    sessionPinHash = value.ifBlank { null }
+                }
+                "auto_quit" -> {
+                    autoQuit = (value == "1" || value.equals("true", ignoreCase = true))
+                }
+                else -> {
+                    remainingParams.add(param)
+                }
+            }
+        }
+
+        val newQuery = if (remainingParams.isNotEmpty()) {
+            "?" + remainingParams.joinToString("&")
+        } else {
+            ""
+        }
+
+        val cleanedUrl = baseUrl + newQuery + fragment
+
+        return SebSessionConfig(
+            cleanUrl = cleanedUrl,
+            sessionPinHash = sessionPinHash,
+            autoQuitEnabled = autoQuit
+        )
+    }
+
+    /**
+     * Valida si un PIN introducido por el docente es válido:
+     * - Coincide con el PIN de sesión dinámico (comparando su SHA-256).
+     * - O coincide con el PIN maestro de respaldo ("8426").
+     */
+    fun isPinValid(inputPin: String, sessionPinHash: String?): Boolean {
+        val trimmed = inputPin.trim()
+        if (trimmed == DEFAULT_TEACHER_PIN) {
+            return true
+        }
+        if (!sessionPinHash.isNullOrBlank()) {
+            val inputHash = sha256(trimmed)
+            if (inputHash.equals(sessionPinHash.trim(), ignoreCase = true)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * Whitelist de dominios autorizados de EducaMadrid (*.educa.madrid.org y *.educamadrid.org).
+     */
+    fun isAllowedDomain(url: String): Boolean {
+        return try {
+            val trimmed = url.trim().lowercase()
+            if (trimmed == "about:blank") return true
+
+            val uri = URI(trimmed)
+            val host = uri.host?.lowercase() ?: return false
+
+            host == "educa.madrid.org" ||
+                    host.endsWith(".educa.madrid.org") ||
+                    host == "educamadrid.org" ||
+                    host.endsWith(".educamadrid.org")
+        } catch (_: Exception) {
+            false
         }
     }
 }

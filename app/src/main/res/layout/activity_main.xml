@@ -207,6 +207,24 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <!-- Botón verde de entrega de examen (auto_quit) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAutoQuit"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp"
+                android:backgroundTint="#2E7D32"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Examen Entregado - Salir"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:cornerRadius="6dp" />
+
             <!-- Botón discreto para que el profesor pueda salir o reconfigurar con PIN -->
             <ImageButton
                 android:id="@+id/btnTeacherExit"
