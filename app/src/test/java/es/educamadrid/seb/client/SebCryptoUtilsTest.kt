@@ -117,4 +117,44 @@ class SebCryptoUtilsTest {
         assertFalse(SebCryptoUtils.isAllowedDomain("https://chatgpt.com"))
         assertFalse(SebCryptoUtils.isAllowedDomain("https://evil-educamadrid.org.attacker.com"))
     }
+
+    @Test
+    fun testShouldTriggerAutoQuit() {
+        // 1. summary.php NUNCA debe activar la salida automática (el alumno debe confirmar el envío)
+        assertFalse(
+            "summary.php no debe activar auto_quit antes de confirmar entrega",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/summary.php?attempt=1234", false)
+        )
+        assertFalse(
+            "summary.php no debe activar auto_quit incluso si se procesó otro intento",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/summary.php?attempt=1234", true)
+        )
+
+        // 2. view.php antes de entregar el examen NO debe activar auto_quit
+        assertFalse(
+            "view.php antes de procesar el intento no debe activar auto_quit",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=9876", false)
+        )
+
+        // 3. review.php (revisión de intento entregado) SÍ activa auto_quit
+        assertTrue(
+            "review.php debe activar la salida automática",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/review.php?attempt=1234", true)
+        )
+        assertTrue(
+            "review.php debe activar la salida automática",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/review.php?attempt=1234", false)
+        )
+
+        // 4. view.php tras haber enviado y procesado el intento a través de processattempt.php SÍ activa auto_quit
+        assertTrue(
+            "view.php debe activar auto_quit si el intento fue procesado por processattempt.php",
+            SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=9876", true)
+        )
+
+        // 5. Esquemas explícitos de salida SEB
+        assertTrue(SebCryptoUtils.shouldTriggerAutoQuit("seb://quit", false))
+        assertTrue(SebCryptoUtils.shouldTriggerAutoQuit("sebs://quit", false))
+        assertTrue(SebCryptoUtils.shouldTriggerAutoQuit("https://aulavirtual33.educamadrid.org/mod/quiz/quit.php", false))
+    }
 }

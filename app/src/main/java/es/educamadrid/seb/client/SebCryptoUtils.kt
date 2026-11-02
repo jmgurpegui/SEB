@@ -198,4 +198,41 @@ object SebCryptoUtils {
             false
         }
     }
+
+    /**
+     * Evalúa si una URL de Moodle debe activar el botón verde de salida automática (auto_quit):
+     * - summary.php está expresamente EXCLUIDO (paso intermedio donde el alumno aún debe confirmar el envío).
+     * - Retorna true si es una URL de revisión final (review.php).
+     * - Retorna true si es un esquema o enlace de salida SEB (seb://quit, sebs://quit, quit.php).
+     * - Retorna true si regresa a la portada del cuestionario (mod/quiz/view.php) habiendo procesado
+     *   la entrega previamente a través de processattempt.php.
+     */
+    fun shouldTriggerAutoQuit(url: String, hasProcessedAttempt: Boolean): Boolean {
+        val lower = url.trim().lowercase()
+
+        // 1. Exclusión explícita de summary.php (pantalla de resumen previo a enviar)
+        if (lower.contains("summary.php")) {
+            return false
+        }
+
+        // 2. Esquemas o URLs de salida SEB
+        if (lower.startsWith("seb://quit") ||
+            lower.startsWith("sebs://quit") ||
+            lower.contains("quit.php")
+        ) {
+            return true
+        }
+
+        // 3. Pantalla de revisión final posterior a la entrega
+        if (lower.contains("review.php")) {
+            return true
+        }
+
+        // 4. Regreso a la portada del cuestionario tras haber procesado el intento
+        if (hasProcessedAttempt && lower.contains("mod/quiz/view.php")) {
+            return true
+        }
+
+        return false
+    }
 }

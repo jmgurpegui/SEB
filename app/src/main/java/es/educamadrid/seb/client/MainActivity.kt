@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     private var currentSessionPinHash: String? = null
     private var isAutoQuitEnabled: Boolean = false
     private var hasEnteredQuizAttempt: Boolean = false
+    private var hasProcessedAttempt: Boolean = false
 
     // Constantes criptográficas SEB configurables
     private var currentBrowserExamKey: String = SebCryptoUtils.DEFAULT_BROWSER_EXAM_KEY
@@ -313,6 +314,11 @@ class MainActivity : AppCompatActivity() {
                 ): Boolean {
                     val targetUrl = request?.url?.toString() ?: return false
 
+                    // Si se envía el intento a través de processattempt.php, registramos el envío
+                    if (targetUrl.lowercase(Locale.getDefault()).contains("processattempt.php")) {
+                        hasProcessedAttempt = true
+                    }
+
                     // 1. Detección de Quit URL / seb://quit / sebs://quit
                     if (targetUrl.startsWith("seb://quit", ignoreCase = true) ||
                         targetUrl.startsWith("sebs://quit", ignoreCase = true) ||
@@ -353,22 +359,30 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Evalúa el progreso del examen en Moodle para activar el botón verde de salida automática.
+     * Excluye expresamente summary.php (paso intermedio donde el alumno aún debe confirmar el envío).
      */
     private fun checkAutoQuitProgression(url: String) {
         val lower = url.lowercase(Locale.getDefault())
 
         // El alumno ha entrado en la resolución del intento
-        if (lower.contains("attempt.php") || lower.contains("processattempt.php")) {
+        if (lower.contains("attempt.php")) {
             hasEnteredQuizAttempt = true
         }
 
-        // Si auto_quit está habilitado y el alumno ha navegado a la página de revisión o finalización
-        if (hasEnteredQuizAttempt && isAutoQuitEnabled) {
-            if (lower.contains("review.php") ||
-                lower.contains("view.php") ||
-                lower.contains("summary.php")
-            ) {
+        // El alumno ha enviado el intento para procesamiento final
+        if (lower.contains("processattempt.php")) {
+            hasProcessedAttempt = true
+        }
+
+        // Si auto_quit está habilitado, evaluamos la condición estricta de finalización
+        if (isAutoQuitEnabled) {
+            if (SebCryptoUtils.shouldTriggerAutoQuit(url, hasProcessedAttempt)) {
                 binding.btnAutoQuit.visibility = View.VISIBLE
+            } else {
+                // Si el alumno permanece en summary.php o regresa a attempt.php, asegurar que el botón permanece oculto
+                if (!lower.contains("review.php") && !lower.contains("quit")) {
+                    binding.btnAutoQuit.visibility = View.GONE
+                }
             }
         }
     }
@@ -418,6 +432,7 @@ class MainActivity : AppCompatActivity() {
         currentSessionPinHash = sessionConfig.sessionPinHash
         isAutoQuitEnabled = sessionConfig.autoQuitEnabled
         hasEnteredQuizAttempt = false
+        hasProcessedAttempt = false
 
         val cleanUrl = sessionConfig.cleanUrl
 
