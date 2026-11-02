@@ -95,6 +95,7 @@
         <div class="flex items-center space-x-2 sm:space-x-4">
           <nav class="hidden lg:flex items-center space-x-1 text-sm font-medium">
             <a href="#downloads" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_downloads">Descargas</a>
+            <a href="#install-steps" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_steps">Pasos de Instalación</a>
             <a href="#teacher-board" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_board">Pizarra Docente</a>
             <a href="#moodle-guide" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_moodle">Configuración Moodle</a>
             <a href="#faqs" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_faq">Ayuda y FAQ</a>
@@ -471,6 +472,199 @@
         <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider" data-i18n="scan_apk_label">Escanear para Descargar APK</span>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- SECCIÓN: PASOS DE INSTALACIÓN POR EQUIPO   -->
+    <!-- ========================================== -->
+    <section id="install-steps" class="space-y-8 scroll-mt-24">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider">
+          <span>📋</span> <span data-i18n="install_badge">Paso a Paso Oficial</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="install_guide_title">
+          Pasos para Instalar SEB en tu Dispositivo
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base" data-i18n="install_guide_subtitle">
+          Sigue esta guía de 3 pasos según el sistema operativo de tu ordenador, tableta o teléfono para llegar al examen sin incidencias.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- PASOS WINDOWS -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center p-1.5">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/></svg>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base">Windows 10 / 11</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">PC / Laptop</span>
+            </div>
+
+            <ol class="space-y-3 text-xs text-slate-600">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="win_step1_t">Descarga el ejecutable:</strong>
+                  <p data-i18n="win_step1_d">Haz clic en <em>Descargar SetupBundle (.exe)</em> en la sección superior.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="win_step2_t">Instalador & SmartScreen:</strong>
+                  <p data-i18n="win_step2_d">Abre el archivo descargado. Si Windows Defender muestra aviso azul, pulsa <strong>"Más información"</strong> y luego <strong>"Ejecutar de todas formas"</strong>.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="win_step3_t">Listo para examinarte:</strong>
+                  <p data-i18n="win_step3_d">Haz clic en <em>"Lanzar en SEB Local"</em> en la pizarra o abre el archivo <code class="font-mono text-blue-700">.seb</code> proporcionado por tu profesor.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <a href="#downloads" onclick="filterPlatform('windows')" class="w-full text-center py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl transition">
+            <span data-i18n="btn_view_win_dl">Ir a Descarga Windows &rarr;</span>
+          </a>
+        </div>
+
+        <!-- PASOS macOS -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center p-1.5">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base">macOS</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800">MacBook / iMac</span>
+            </div>
+
+            <ol class="space-y-3 text-xs text-slate-600">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="mac_step1_t">Descarga la imagen DMG:</strong>
+                  <p data-i18n="mac_step1_d">Obtén el archivo <code class="font-mono text-slate-800">SafeExamBrowser-3.7.1.dmg</code> desde el botón oficial.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="mac_step2_t">Copiar a Aplicaciones:</strong>
+                  <p data-i18n="mac_step2_d">Abre el DMG y arrastra el icono de SEB a la carpeta <strong>Aplicaciones</strong> de tu Mac.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="mac_step3_t">Permiso Gatekeeper:</strong>
+                  <p data-i18n="mac_step3_d">Abre la app una vez. Si macOS la bloquea por seguridad, ve a <em>Ajustes del Sistema &rarr; Privacidad y Seguridad</em> y pulsa <strong>"Abrir igualmente"</strong>.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <a href="#downloads" onclick="filterPlatform('mac')" class="w-full text-center py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition">
+            <span data-i18n="btn_view_mac_dl">Ir a Descarga Mac &rarr;</span>
+          </a>
+        </div>
+
+        <!-- PASOS iOS / iPadOS -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center p-1.5">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base">iOS / iPadOS</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">iPad / iPhone</span>
+            </div>
+
+            <ol class="space-y-3 text-xs text-slate-600">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="ios_step1_t">Instalar desde App Store:</strong>
+                  <p data-i18n="ios_step1_d">Pulsa en <em>Abrir en App Store</em> o escanea con la cámara del iPad el código QR específico.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="ios_step2_t">Modo Evaluación AAC:</strong>
+                  <p data-i18n="ios_step2_d">Al iniciar el examen, iOS pedirá confirmación para bloquear el dispositivo en modo seguro. Pulsa <strong>"Permitir"</strong>.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="ios_step3_t">Entrega y Cierre:</strong>
+                  <p data-i18n="ios_step3_d">Al completar y enviar el cuestionario en Moodle, el iPad saldrá automáticamente del modo bloqueado.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <button onclick="showIosQrModal()" class="w-full text-center py-2 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition">
+            <span data-i18n="btn_view_ios_qr">Ver QR para iPad &rarr;</span>
+          </button>
+        </div>
+
+        <!-- PASOS ANDROID BYOD -->
+        <div class="bg-white rounded-2xl border-2 border-emerald-500/80 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center p-1.5">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/></svg>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base">Android BYOD</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Móvil / Tablet</span>
+            </div>
+
+            <ol class="space-y-3 text-xs text-slate-600">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="and_step1_t">Descarga directa del APK:</strong>
+                  <p data-i18n="and_step1_d">Escanea el código QR negro con la cámara de tu móvil o pulsa <em>Descargar APK</em>.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="and_step2_t">Permitir Aplicación:</strong>
+                  <p data-i18n="and_step2_d">Si Android indica "origen desconocido", pulsa <strong>Ajustes</strong> y activa <strong>Permitir desde esta fuente</strong> para tu navegador.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
+                <div>
+                  <strong class="text-slate-900" data-i18n="and_step3_t">Anclaje y Examen:</strong>
+                  <p data-i18n="and_step3_d">Abre <em>EducaMadrid SEB</em>, pulsa <strong>Escanear QR de Examen</strong> hacia la pizarra docente y acepta el anclaje de pantalla (Screen Pinning).</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <button onclick="scrollToQrAndroid()" class="w-full text-center py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl transition">
+            <span data-i18n="btn_view_and_qr">Escanear QR de Descarga &rarr;</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
 
     <!-- ========================================== -->
     <!-- SECCIÓN 2: PIZARRA DOCENTE Y GENERADOR QR  -->
@@ -892,6 +1086,38 @@
         faq4_a: "macOS requiere arrastrar la aplicación a la carpeta Aplicaciones. Si aparece el aviso de seguridad de Gatekeeper, abre Ajustes del Sistema -> Privacidad y Seguridad y pulsa en \"Abrir igualmente\".",
         modal_ios_title: "Instalar SEB en iPad / iPhone",
         modal_ios_desc: "Apunta con la cámara de tu iPad para abrir directamente Safe Exam Browser en la App Store de Apple.",
+        nav_steps: "Pasos de Instalación",
+        install_badge: "Paso a Paso Oficial",
+        install_guide_title: "Pasos para Instalar SEB en tu Dispositivo",
+        install_guide_subtitle: "Sigue esta guía de 3 pasos según el sistema operativo de tu ordenador, tableta o teléfono para llegar al examen sin incidencias.",
+        win_step1_t: "Descarga el ejecutable:",
+        win_step1_d: "Haz clic en Descargar SetupBundle (.exe) en la sección superior.",
+        win_step2_t: "Instalador & SmartScreen:",
+        win_step2_d: "Abre el archivo descargado. Si Windows Defender muestra aviso azul, pulsa \"Más información\" y luego \"Ejecutar de todas formas\".",
+        win_step3_t: "Listo para examinarte:",
+        win_step3_d: "Haz clic en \"Lanzar en SEB Local\" en la pizarra o abre el archivo .seb proporcionado por tu profesor.",
+        btn_view_win_dl: "Ir a Descarga Windows →",
+        mac_step1_t: "Descarga la imagen DMG:",
+        mac_step1_d: "Obtén el archivo SafeExamBrowser-3.7.1.dmg desde el botón oficial.",
+        mac_step2_t: "Copiar a Aplicaciones:",
+        mac_step2_d: "Abre el DMG y arrastra el icono de SEB a la carpeta Aplicaciones de tu Mac.",
+        mac_step3_t: "Permiso Gatekeeper:",
+        mac_step3_d: "Abre la app una vez. Si macOS la bloquea por seguridad, ve a Ajustes del Sistema → Privacidad y Seguridad y pulsa \"Abrir igualmente\".",
+        btn_view_mac_dl: "Ir a Descarga Mac →",
+        ios_step1_t: "Instalar desde App Store:",
+        ios_step1_d: "Pulsa en Abrir en App Store o escanea con la cámara del iPad el código QR específico.",
+        ios_step2_t: "Modo Evaluación AAC:",
+        ios_step2_d: "Al iniciar el examen, iOS pedirá confirmación para bloquear el dispositivo en modo seguro. Pulsa \"Permitir\".",
+        ios_step3_t: "Entrega y Cierre:",
+        ios_step3_d: "Al completar y enviar el cuestionario en Moodle, el iPad saldrá automáticamente del modo bloqueado.",
+        btn_view_ios_qr: "Ver QR para iPad →",
+        and_step1_t: "Descarga directa del APK:",
+        and_step1_d: "Escanea el código QR negro con la cámara de tu móvil o pulsa Descargar APK.",
+        and_step2_t: "Permitir Aplicación:",
+        and_step2_d: "Si Android indica \"origen desconocido\", pulsa Ajustes y activa Permitir desde esta fuente para tu navegador.",
+        and_step3_t: "Anclaje y Examen:",
+        and_step3_d: "Abre EducaMadrid SEB, pulsa Escanear QR de Examen hacia la pizarra docente y acepta el anclaje de pantalla (Screen Pinning).",
+        btn_view_and_qr: "Escanear QR de Descarga →",
         footer_legal: "Compatible con Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) y Aula Virtual Moodle."
       },
       en: {
@@ -981,6 +1207,38 @@
         faq4_a: "macOS requires moving the app to the Applications folder. If Gatekeeper alerts you, go to System Settings -> Privacy & Security and click \"Open Anyway\".",
         modal_ios_title: "Install SEB on iPad / iPhone",
         modal_ios_desc: "Point your iPad camera here to open Safe Exam Browser directly in Apple's App Store.",
+        nav_steps: "Installation Steps",
+        install_badge: "Official Step-by-Step",
+        install_guide_title: "Steps to Install SEB on Your Device",
+        install_guide_subtitle: "Follow this 3-step guide for your computer, tablet, or mobile phone to reach your exam smoothly.",
+        win_step1_t: "Download installer:",
+        win_step1_d: "Click Download SetupBundle (.exe) in the section above.",
+        win_step2_t: "Installer & SmartScreen:",
+        win_step2_d: "Open the downloaded file. If Windows Defender shows a blue alert, click \"More info\" and then \"Run anyway\".",
+        win_step3_t: "Ready for your exam:",
+        win_step3_d: "Click \"Launch in Local SEB\" on the board or open the .seb file provided by your teacher.",
+        btn_view_win_dl: "Go to Windows Download →",
+        mac_step1_t: "Download DMG image:",
+        mac_step1_d: "Get the SafeExamBrowser-3.7.1.dmg disk image from the official button.",
+        mac_step2_t: "Copy to Applications:",
+        mac_step2_d: "Open the DMG and drag the SEB icon to your Mac's Applications folder.",
+        mac_step3_t: "Gatekeeper permission:",
+        mac_step3_d: "Open the app once. If macOS blocks it, go to System Settings → Privacy & Security and click \"Open Anyway\".",
+        btn_view_mac_dl: "Go to Mac Download →",
+        ios_step1_t: "Install from App Store:",
+        ios_step1_d: "Tap Open on App Store or scan the iPad-specific QR code with your camera.",
+        ios_step2_t: "AAC Assessment Mode:",
+        ios_step2_d: "Upon launching the exam, iOS will prompt to lock down your iPad. Tap \"Allow\".",
+        ios_step3_t: "Submission & Exit:",
+        ios_step3_d: "When you finish and submit your quiz on Moodle, the iPad automatically exits locked mode.",
+        btn_view_ios_qr: "View iPad QR →",
+        and_step1_t: "Direct APK download:",
+        and_step1_d: "Scan the black QR code with your mobile camera or tap Download APK.",
+        and_step2_t: "Allow Unknown App:",
+        and_step2_d: "If Android flags \"unknown app\", tap Settings and toggle \"Allow from this source\" for your browser.",
+        and_step3_t: "Pinning & Exam:",
+        and_step3_d: "Open EducaMadrid SEB, tap Scan Exam QR towards the teacher board, and accept Screen Pinning.",
+        btn_view_and_qr: "Scan Download QR →",
         footer_legal: "Compatible with Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) and Moodle Virtual Classroom."
       }
     };
@@ -1163,15 +1421,66 @@
       return 'sebs://' + raw;
     }
 
-    // Cálculo criptográfico SHA-256 en navegador para el PIN de sesión
+    // Función criptográfica pura SHA-256 (garantiza hash idéntico en file://, http:// y https://)
+    function pureJsSha256(ascii) {
+      function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+      const mathPow = Math.pow;
+      const maxWord = mathPow(2, 32);
+      let i, j;
+      const words = [];
+      const asciiBitLength = ascii.length * 8;
+      let hash = pureJsSha256.h = pureJsSha256.h || [];
+      const k = pureJsSha256.k = pureJsSha256.k || [];
+      let primeCounter = k.length;
+      const isComposite = {};
+      for (let candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+          for (i = 0; i < 313; i += candidate) { isComposite[i] = candidate; }
+          hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+          k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+        }
+      }
+      ascii += '\x80';
+      while (ascii.length % 64 - 56) ascii += '\x00';
+      for (i = 0; i < ascii.length; i++) {
+        j = ascii.charCodeAt(i);
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+      }
+      words[words.length] = ((asciiBitLength / maxWord) | 0);
+      words[words.length] = (asciiBitLength);
+      let h0 = hash[0], h1 = hash[1], h2 = hash[2], h3 = hash[3], h4 = hash[4], h5 = hash[5], h6 = hash[6], h7 = hash[7];
+      for (i = 0; i < words.length;) {
+        let w = words.slice(i, i += 16);
+        let oldHash = [h0, h1, h2, h3, h4, h5, h6, h7];
+        for (j = 0; j < 64; j++) {
+          let w15 = w[j - 15], w2 = w[j - 2];
+          let s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+          let s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+          let ch = (h4 & h5) ^ ((~h4) & h6);
+          let maj = (h0 & h1) ^ (h0 & h2) ^ (h1 & h2);
+          let temp1 = (h7 + (rightRotate(h4, 6) ^ rightRotate(h4, 11) ^ rightRotate(h4, 25)) + ch + k[j] + (w[j] = (j < 16) ? w[j] : (w[j - 16] + s0 + w[j - 7] + s1) | 0)) | 0;
+          let temp2 = ((rightRotate(h0, 2) ^ rightRotate(h0, 13) ^ rightRotate(h0, 22)) + maj) | 0;
+          h7 = h6; h6 = h5; h5 = h4; h4 = (h3 + temp1) | 0; h3 = h2; h2 = h1; h1 = h0; h0 = (temp1 + temp2) | 0;
+        }
+        h0 = (h0 + oldHash[0]) | 0; h1 = (h1 + oldHash[1]) | 0; h2 = (h2 + oldHash[2]) | 0; h3 = (h3 + oldHash[3]) | 0;
+        h4 = (h4 + oldHash[4]) | 0; h5 = (h5 + oldHash[5]) | 0; h6 = (h6 + oldHash[6]) | 0; h7 = (h7 + oldHash[7]) | 0;
+      }
+      return [h0, h1, h2, h3, h4, h5, h6, h7].map(h => (h >>> 0).toString(16).padStart(8, '0')).join('');
+    }
+
+    // Cálculo criptográfico SHA-256 en navegador para el PIN de sesión (WebCrypto API con pure JS fallback)
     async function sha256Hex(text) {
       if (window.crypto && crypto.subtle) {
-        const msgUint8 = new TextEncoder().encode(text);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        try {
+          const msgUint8 = new TextEncoder().encode(text);
+          const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (e) {
+          // Continuar al fallback de pure JS
+        }
       }
-      return 'a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0';
+      return pureJsSha256(text);
     }
 
     async function processExamLink() {
