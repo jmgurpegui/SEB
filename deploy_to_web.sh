@@ -131,13 +131,16 @@ repo = '$GITHUB_REPO'
 with open(path, 'r', encoding='utf-8') as f:
     content = f.read()
 
-pattern = r\"return \{ user: '[^']*', repo: '[^']*', isGitHubPages: false \};\"
-replacement = f\"return {{ user: '{user}', repo: '{repo}', isGitHubPages: false }};\"
+pattern = r\"return \{ user: '[^']*', repo: '[^']*'[^}]*\};\"
+replacement = f\"return {{ user: '{user}', repo: '{repo}' }};\"
 
-content = re.sub(pattern, replacement, content)
-with open(path, 'w', encoding='utf-8') as f:
-    f.write(content)
-print('✓ Repositorio predeterminado actualizado en docs/index.html')
+if re.search(pattern, content):
+    content = re.sub(pattern, replacement, content)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print('✓ Repositorio predeterminado actualizado en docs/index.html')
+else:
+    print('[AVISO] Patrón de repositorio no encontrado en docs/index.html')
 "
 fi
 

@@ -14,3 +14,15 @@
 .cxx
 local.properties
 app/build
+
+# Installer packages and OS binaries (must be distributed via Releases, not in git repo)
+windows/
+apple/
+*.exe
+*.dmg
+*.pkg
+*.msi
+*Zone.Identifier
+*.apk
+dist/
+
