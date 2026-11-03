@@ -684,12 +684,20 @@
           </p>
         </div>
 
-        <button onclick="toggleFullScreenBoard()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl shadow transition transform active:scale-95 shrink-0">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
-          </svg>
-          <span data-i18n="btn_fullscreen_board">Modo Proyector Pantalla Completa</span>
-        </button>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <!-- Botón de Modo Aula / Minimizar Seguridad -->
+          <button id="btnToggleTeacherSecurity" onclick="toggleSecurityPanel()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200 text-xs font-bold rounded-xl shadow-sm transition transform active:scale-95 shrink-0" title="Configurar o minimizar los PINs y parámetros de seguridad">
+            <span id="btnSecIcon">🔒</span>
+            <span id="btnSecText" data-i18n="btn_toggle_sec_show">Configurar Seguridad Docente</span>
+          </button>
+
+          <button onclick="toggleFullScreenBoard()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl shadow transition transform active:scale-95 shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+            </svg>
+            <span data-i18n="btn_fullscreen_board">Modo Proyector Pantalla Completa</span>
+          </button>
+        </div>
       </div>
 
       <!-- Controles de Configuración del Examen -->
@@ -697,6 +705,8 @@
         
         <!-- Columna Izquierda: Entradas y Herramientas -->
         <div class="space-y-6 lg:col-span-1">
+          
+          <!-- Bloque 1: URL del Examen -->
           <div class="space-y-2">
             <label for="inputExamUrl" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700" data-i18n="lbl_input_url">
               URL del Examen en Aula Virtual EducaMadrid:
@@ -719,38 +729,7 @@
             </div>
           </div>
 
-          <!-- Parámetros de Seguridad de Sesión: PIN Dinámico y Quit URL -->
-          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-700" data-i18n="sec_params_title">Seguridad de la Sesión</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Anti-Fraude</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label for="inputSessionPin" class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="lbl_session_pin">
-                  PIN de Salida (4 dígitos):
-                </label>
-                <input type="text" id="inputSessionPin" maxlength="4" pattern="[0-9]{4}" value="8426"
-                  class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-sm font-bold text-center tracking-widest text-brand-800 focus:ring-2 focus:ring-brand-700"
-                  oninput="processExamLink()">
-              </div>
-              <div class="flex items-center pt-2 sm:pt-4">
-                <label class="flex items-start gap-2 cursor-pointer">
-                  <input type="checkbox" id="chkAutoQuit" checked class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" onchange="processExamLink()">
-                  <span class="text-xs text-slate-700 leading-tight">
-                    <strong data-i18n="lbl_auto_quit_title">Desbloqueo automático al entregar</strong><br>
-                    <span class="text-[10px] text-slate-500" data-i18n="lbl_auto_quit_desc">Quit URL en Moodle sin pedir PIN</span>
-                  </span>
-                </label>
-              </div>
-            </div>
-            <p class="text-[10px] text-slate-500 italic" data-i18n="session_pin_note">
-              * El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.
-            </p>
-          </div>
-
-          <!-- Protocolo Generado sebs:// -->
+          <!-- Bloque 2: Protocolo Generado sebs:// y Lanzador -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-slate-700" data-i18n="lbl_sebs_ready">Protocolo SEBS Generado:</span>
@@ -768,24 +747,94 @@
             </div>
           </div>
 
-          <!-- Credenciales Docentes de Emergencia -->
-          <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
-            <div class="flex items-center gap-2 text-amber-800 font-bold text-xs">
-              <span>⚠️</span>
-              <span data-i18n="teacher_pin_heading">PIN Docente de Desbloqueo</span>
+          <!-- Bloque 3: Panel Plegable de Seguridad de Sesión y Credenciales Docentes -->
+          <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 shadow-sm transition-all">
+            <!-- Barra superior del desplegable / minimizable -->
+            <button type="button" onclick="toggleSecurityPanel()" class="w-full flex items-center justify-between p-3.5 bg-slate-100 hover:bg-slate-200/80 transition text-left text-xs font-bold text-slate-700">
+              <div class="flex items-center gap-2">
+                <span id="secPanelIcon">🔒</span>
+                <span data-i18n="sec_panel_title">Seguridad de la Sesión y PIN Docente</span>
+                <span id="secPanelBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60" data-i18n="sec_status_hidden">Oculto</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-brand-700">
+                <span id="secPanelToggleAction" class="text-[11px] font-semibold" data-i18n="sec_action_show">Desplegar</span>
+                <svg id="secPanelChevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+            </button>
+
+            <!-- Aviso cuando está minimizado -->
+            <div id="secPanelNotice" class="p-3 text-[11px] text-slate-500 bg-white flex items-center gap-2 border-t border-slate-200">
+              <span class="text-emerald-600 font-bold shrink-0">🛡️</span>
+              <span data-i18n="classroom_mode_notice">Modo Aula Protegido: Los alumnos pueden ver y escanear el QR sin visualizar el PIN de salida ni credenciales maestras.</span>
             </div>
-            <p class="text-[11px] text-amber-700 leading-relaxed" data-i18n="teacher_pin_desc">
-              Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN de sesión configurado arriba (o el PIN maestro de respaldo):
-            </p>
-            <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-amber-200">
-              <span class="text-xs text-slate-500" data-i18n="lbl_active_pin">PIN de Sesión Activo:</span>
-              <code id="displayActivePin" class="text-base font-black font-mono text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded">8426</code>
-            </div>
-            <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
-              <span>PIN Maestro de Respaldo:</span>
-              <code class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">8426</code>
+
+            <!-- Contenedor desplegable (oculto por defecto) -->
+            <div id="teacherSecurityPanel" class="hidden p-4 space-y-4 border-t border-slate-200 bg-white transition-all">
+              
+              <!-- Parámetros de Seguridad de Sesión -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-700" data-i18n="sec_sub_title">Parámetros de Sesión</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Anti-Fraude</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="inputSessionPin" class="block text-xs font-semibold text-slate-700 mb-1" data-i18n="lbl_session_pin">
+                      PIN de Salida (4 dígitos):
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="inputSessionPin" maxlength="4" pattern="[0-9]{4}" value="8426"
+                        class="w-full px-3 py-2 pr-9 rounded-xl border border-slate-300 font-mono text-sm font-bold text-center tracking-widest text-brand-800 focus:ring-2 focus:ring-brand-700"
+                        oninput="processExamLink()">
+                      <button type="button" onclick="togglePinVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs transition" title="Ver / Ocultar PIN">
+                        <span id="pinEyeIcon">👁️</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="flex items-center pt-2 sm:pt-4">
+                    <label class="flex items-start gap-2 cursor-pointer">
+                      <input type="checkbox" id="chkAutoQuit" checked class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" onchange="processExamLink()">
+                      <span class="text-xs text-slate-700 leading-tight">
+                        <strong data-i18n="lbl_auto_quit_title">Desbloqueo automático al entregar</strong><br>
+                        <span class="text-[10px] text-slate-500" data-i18n="lbl_auto_quit_desc">Quit URL en Moodle sin pedir PIN</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <p class="text-[10px] text-slate-500 italic" data-i18n="session_pin_note">
+                  * El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.
+                </p>
+              </div>
+
+              <!-- Credenciales Docentes de Emergencia -->
+              <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
+                <div class="flex items-center gap-2 text-amber-800 font-bold text-xs">
+                  <span>⚠️</span>
+                  <span data-i18n="teacher_pin_heading">PIN Docente de Desbloqueo</span>
+                </div>
+                <p class="text-[11px] text-amber-700 leading-relaxed" data-i18n="teacher_pin_desc">
+                  Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN de sesión configurado arriba (o el PIN maestro de respaldo):
+                </p>
+                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-amber-200">
+                  <span class="text-xs text-slate-500" data-i18n="lbl_active_pin">PIN de Sesión Activo:</span>
+                  <code id="displayActivePin" class="text-base font-black font-mono text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded">8426</code>
+                </div>
+                <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
+                  <span>PIN Maestro de Respaldo:</span>
+                  <code class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">8426</code>
+                </div>
+              </div>
+
+              <!-- Botón rápido para volver a minimizar -->
+              <button type="button" onclick="toggleSecurityPanel()" class="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                <span>▲</span> <span data-i18n="btn_minimize_sec">Minimizar Seguridad (Modo Aula)</span>
+              </button>
             </div>
           </div>
+
         </div>
 
         <!-- Columna Derecha: Proyector Gigante de Pizarra -->
@@ -1118,6 +1167,16 @@
         and_step3_t: "Anclaje y Examen:",
         and_step3_d: "Abre EducaMadrid SEB, pulsa Escanear QR de Examen hacia la pizarra docente y acepta el anclaje de pantalla (Screen Pinning).",
         btn_view_and_qr: "Escanear QR de Descarga →",
+        btn_toggle_sec_show: "Configurar Seguridad Docente",
+        btn_toggle_sec_hide: "Minimizar Seguridad (Modo Aula)",
+        sec_panel_title: "Seguridad de la Sesión y PIN Docente",
+        sec_status_hidden: "Oculto para Alumnos",
+        sec_status_visible: "Visible",
+        sec_action_show: "Desplegar",
+        sec_action_hide: "Minimizar",
+        sec_sub_title: "Parámetros de Sesión",
+        btn_minimize_sec: "Minimizar Seguridad (Modo Aula)",
+        classroom_mode_notice: "Modo Aula Protegido: Los alumnos pueden ver y escanear el QR sin visualizar el PIN de salida ni credenciales maestras.",
         footer_legal: "Compatible con Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) y Aula Virtual Moodle."
       },
       en: {
@@ -1239,6 +1298,16 @@
         and_step3_t: "Pinning & Exam:",
         and_step3_d: "Open EducaMadrid SEB, tap Scan Exam QR towards the teacher board, and accept Screen Pinning.",
         btn_view_and_qr: "Scan Download QR →",
+        btn_toggle_sec_show: "Configure Teacher Security",
+        btn_toggle_sec_hide: "Minimize Security (Classroom Mode)",
+        sec_panel_title: "Session Security & Teacher PIN",
+        sec_status_hidden: "Hidden from Students",
+        sec_status_visible: "Visible",
+        sec_action_show: "Expand",
+        sec_action_hide: "Minimize",
+        sec_sub_title: "Session Parameters",
+        btn_minimize_sec: "Minimize Security (Classroom Mode)",
+        classroom_mode_notice: "Protected Classroom Mode: Students can view and scan the QR code without seeing the exit PIN or teacher master keys.",
         footer_legal: "Compatible with Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) and Moodle Virtual Classroom."
       }
     };
@@ -1267,6 +1336,22 @@
           el.textContent = translations[lang][key];
         }
       });
+
+      // Actualizar textos dinámicos del panel de seguridad según estado
+      const badge = document.getElementById('secPanelBadge');
+      const actionText = document.getElementById('secPanelToggleAction');
+      const btnSecText = document.getElementById('btnSecText');
+      if (typeof isSecurityPanelVisible !== 'undefined') {
+        if (isSecurityPanelVisible) {
+          if (badge) badge.textContent = translations[lang].sec_status_visible;
+          if (actionText) actionText.textContent = translations[lang].sec_action_hide;
+          if (btnSecText) btnSecText.textContent = translations[lang].btn_toggle_sec_hide;
+        } else {
+          if (badge) badge.textContent = translations[lang].sec_status_hidden;
+          if (actionText) actionText.textContent = translations[lang].sec_action_show;
+          if (btnSecText) btnSecText.textContent = translations[lang].btn_toggle_sec_show;
+        }
+      }
 
       // Actualizar detección de SO con textos en el idioma
       detectAndApplyOS();
@@ -1543,6 +1628,59 @@
     function resetDefaultUrl() {
       document.getElementById('inputExamUrl').value = "https://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=12845";
       processExamLink();
+    }
+
+    // 5. Control de Visibilidad del Panel de Seguridad Docente (Modo Aula)
+    let isSecurityPanelVisible = false;
+
+    function toggleSecurityPanel() {
+      const panel = document.getElementById('teacherSecurityPanel');
+      const notice = document.getElementById('secPanelNotice');
+      const badge = document.getElementById('secPanelBadge');
+      const actionText = document.getElementById('secPanelToggleAction');
+      const chevron = document.getElementById('secPanelChevron');
+      const btnSecText = document.getElementById('btnSecText');
+      const btnSecIcon = document.getElementById('btnSecIcon');
+      const isEn = currentLang === 'en';
+
+      isSecurityPanelVisible = !isSecurityPanelVisible;
+
+      if (isSecurityPanelVisible) {
+        if (panel) panel.classList.remove('hidden');
+        if (notice) notice.classList.add('hidden');
+        if (badge) {
+          badge.textContent = isEn ? "Visible" : "Visible";
+          badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300/60";
+        }
+        if (actionText) actionText.textContent = isEn ? "Minimizar" : "Minimizar";
+        if (chevron) chevron.classList.add('rotate-180');
+        if (btnSecText) btnSecText.textContent = isEn ? "Minimize Security (Classroom Mode)" : "Minimizar Seguridad (Modo Aula)";
+        if (btnSecIcon) btnSecIcon.textContent = "🙈";
+      } else {
+        if (panel) panel.classList.add('hidden');
+        if (notice) notice.classList.remove('hidden');
+        if (badge) {
+          badge.textContent = isEn ? "Hidden from Students" : "Oculto para Alumnos";
+          badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60";
+        }
+        if (actionText) actionText.textContent = isEn ? "Expand" : "Desplegar";
+        if (chevron) chevron.classList.remove('rotate-180');
+        if (btnSecText) btnSecText.textContent = isEn ? "Configure Teacher Security" : "Configurar Seguridad Docente";
+        if (btnSecIcon) btnSecIcon.textContent = "🔒";
+      }
+    }
+
+    function togglePinVisibility() {
+      const pinInput = document.getElementById('inputSessionPin');
+      const eyeIcon = document.getElementById('pinEyeIcon');
+      if (!pinInput) return;
+      if (pinInput.type === 'password') {
+        pinInput.type = 'text';
+        if (eyeIcon) eyeIcon.textContent = '🙈';
+      } else {
+        pinInput.type = 'password';
+        if (eyeIcon) eyeIcon.textContent = '👁️';
+      }
     }
 
     function toggleFullScreenBoard() {
