@@ -3,41 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EducaMadrid SEB Portal - Safe Exam Browser Multiplataforma</title>
-  <meta name="description" content="Portal oficial de Safe Exam Browser (SEB) para Aula Virtual EducaMadrid (Moodle). Descargas para Windows, macOS, iOS y cliente seguro Android BYOD.">
-  <meta name="theme-color" content="#0d47a1">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230d47a1'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z'/></svg>">
+  <title>EducaMadrid SEB • Portal Oficial Safe Exam Browser</title>
+  
+  <!-- Favicon y Metadatos -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306183b'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z'/></svg>">
+  <meta name="description" content="Portal oficial de Safe Exam Browser para EducaMadrid. Instalación en 1 clic para Windows, macOS, iPadOS y Android BYOD. Pizarra docente y proyector QR.">
 
-  <!-- TailwindCSS CDN -->
+  <!-- Tailwind CSS & QRCode.js -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- QRCode.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              200: '#bfdbfe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#0d47a1',
-              900: '#0a2558',
-              950: '#06183b',
-            },
-            madrid: {
-              red: '#b71c1c',
-              lightRed: '#ffebee'
+              50: '#f0f5ff',
+              100: '#e0ebff',
+              200: '#c7d9fe',
+              300: '#a3c0fd',
+              400: '#759cfb',
+              500: '#4a75f6',
+              600: '#2d54ec',
+              700: '#1e3fda',
+              800: '#1c34b0',
+              900: '#06183b', // Azul Institucional EducaMadrid
+              950: '#040d22'
             }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
           }
         }
       }
@@ -45,60 +38,53 @@
   </script>
 
   <style>
-    /* Estilos de proyección QR de alto contraste */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.02); }
+    }
+    .badge-pulse { animation: pulse-subtle 2.5s infinite ease-in-out; }
     .qr-box canvas, .qr-box img {
       margin: 0 auto;
-      border-radius: 12px;
-      display: block;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
     .tab-active {
-      border-color: #1d4ed8;
-      color: #1d4ed8;
-      background-color: #eff6ff;
-    }
-    .badge-pulse {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      background-color: #06183b !important;
+      color: #ffffff !important;
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
 
   <!-- ========================================== -->
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR INSTITUCIONAL -->
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR               -->
   <!-- ========================================== -->
   <header class="bg-brand-900 text-white sticky top-0 z-50 shadow-md border-b border-brand-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
         
-        <!-- Logotipo Institucional y Título -->
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center shadow-inner border border-white/20">
-            <!-- Escudo SEB Oficial -->
+        <!-- Logotipo Institucional -->
+        <a href="#" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center shadow-inner border border-white/20 group-hover:scale-105 transition-transform">
             <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
             </svg>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-base sm:lg font-black tracking-tight text-white">EducaMadrid SEB</span>
-              <span class="text-[10px] sm:text-xs font-semibold uppercase px-2 py-0.5 rounded-full bg-brand-700/80 text-cyan-200 border border-brand-500/40">Multi-OS</span>
+              <span class="text-base sm:text-lg font-black tracking-tight text-white">EducaMadrid SEB</span>
+              <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-brand-700/80 text-cyan-200 border border-brand-500/40">Multi-OS</span>
             </div>
-            <p class="text-xs text-slate-300 hidden sm:block" data-i18n="header_subtitle">Portal Oficial de Evaluación Segura • Aula Virtual Moodle</p>
+            <p class="text-xs text-slate-300 hidden sm:block" data-i18n="header_subtitle">Portal de Evaluación Segura • Aula Virtual Moodle</p>
           </div>
-        </div>
+        </a>
 
-        <!-- Navegación y Selector de Idioma -->
+        <!-- Enlaces Principales y Selector de Idioma -->
         <div class="flex items-center space-x-2 sm:space-x-4">
-          <nav class="hidden lg:flex items-center space-x-1 text-sm font-medium">
-            <a href="#downloads" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_downloads">Descargas</a>
-            <a href="#install-steps" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_steps">Pasos de Instalación</a>
-            <a href="#teacher-board" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_board">Pizarra Docente</a>
-            <a href="#moodle-guide" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_moodle">Configuración Moodle</a>
-            <a href="#faqs" class="px-3 py-1.5 rounded-lg text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_faq">Ayuda y FAQ</a>
+          <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+            <a href="#downloads" class="px-3.5 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_install">Instalar SEB</a>
+            <a href="#teacher-board" class="px-3.5 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_board">Pizarra de Examen</a>
+            <a href="#guide-faq" class="px-3.5 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_help">Guía y Ayuda</a>
           </nav>
 
           <!-- Selector de Idioma (ES / EN) -->
@@ -112,7 +98,7 @@
           </div>
 
           <!-- Botón Acceso Rápido Pizarra -->
-          <a href="#teacher-board" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs font-bold shadow-md transition transform active:scale-95">
+          <a href="#teacher-board" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold shadow-md transition transform active:scale-95">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
@@ -125,34 +111,32 @@
   </header>
 
   <!-- ========================================== -->
-  <!-- HERO PRINCIPAL & BANNER AUTO-DETECCIÓN SO  -->
+  <!-- HERO PRINCIPAL & DETECCIÓN INTELIGENTE     -->
   <!-- ========================================== -->
   <section class="bg-gradient-to-b from-brand-900 via-brand-800 to-slate-900 text-white py-12 sm:py-16 px-4">
-    <div class="max-w-5xl mx-auto text-center space-y-6">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
       
-      <!-- Insignia de Estado -->
+      <!-- Insignia de Estado Oficial -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs sm:text-sm font-medium backdrop-blur-md">
         <span class="w-2 h-2 rounded-full bg-emerald-400 badge-pulse"></span>
         <span data-i18n="hero_badge">Ecosistema Oficial Safe Exam Browser • Alianza EducaMadrid</span>
       </div>
 
+      <!-- Título Principal -->
       <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight sm:leading-none">
         <span data-i18n="hero_title_1">Exámenes Seguros en Moodle</span><br>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-200 to-indigo-200" data-i18n="hero_title_2">Para Todos los Dispositivos</span>
       </h1>
 
-      <p class="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
-        Bloqueo de pantalla completa (Kiosk), anti-capturas, prevención contra IA y verificación criptográfica (BEK/CKH) para Windows, macOS, iPadOS y Android personal (BYOD).
+      <p class="text-slate-200 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
+        Bloqueo de pantalla completa (Kiosk), anti-copia, prevención contra IA y verificación criptográfica (BEK/CKH) para Windows, macOS, iPadOS y Android BYOD.
       </p>
 
-      <!-- ========================================== -->
       <!-- TARJETA DESTACADA: DETECCIÓN INTELIGENTE SO -->
-      <!-- ========================================== -->
       <div id="osDetectionCard" class="mt-8 bg-white/10 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-white/20 shadow-2xl max-w-2xl mx-auto text-left transition-all">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div class="flex items-center space-x-3.5">
             <div id="detectedOsIcon" class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center p-2.5 shrink-0">
-              <!-- Reemplazado dinámicamente -->
               <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
@@ -176,511 +160,296 @@
         </div>
       </div>
 
+      <!-- Enlace Rápido Docente -->
+      <div class="pt-2 text-xs text-slate-300">
+        <a href="#teacher-board" class="inline-flex items-center gap-1.5 text-cyan-300 hover:text-white underline transition font-medium">
+          <span data-i18n="hero_teacher_link">¿Eres docente? Ir a la Pizarra de Examen ↓</span>
+        </a>
+      </div>
+
     </div>
   </section>
 
   <!-- ========================================== -->
-  <!-- SECCIÓN 1: MATRIZ DE DESCARGAS POR SISTEMA  -->
+  <!-- CONTENIDO PRINCIPAL                        -->
   <!-- ========================================== -->
-  <main id="downloads" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full space-y-12">
-
-    <!-- Encabezado de la Sección -->
-    <div class="text-center max-w-3xl mx-auto space-y-2">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="os_matrix_title">
-        Instaladores Oficiales por Sistema Operativo
-      </h2>
-      <p class="text-slate-600 text-sm sm:text-base" data-i18n="os_matrix_subtitle">
-        Selecciona tu plataforma para descargar el cliente certificado compatible con el protocolo SEB de EducaMadrid.
-      </p>
-    </div>
-
-    <!-- Pestañas de Filtrado de Plataforma -->
-    <div class="flex justify-center">
-      <div class="inline-flex p-1 bg-slate-200 rounded-2xl max-w-full overflow-x-auto text-xs sm:text-sm font-semibold text-slate-600 shadow-inner">
-        <button id="filterBtnAll" onclick="filterPlatform('all')" class="px-4 py-2 rounded-xl transition-all tab-active shadow-sm" data-i18n="filter_all">Todos los Sistemas</button>
-        <button id="filterBtnWin" onclick="filterPlatform('windows')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_win">Windows</button>
-        <button id="filterBtnMac" onclick="filterPlatform('mac')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_mac">macOS</button>
-        <button id="filterBtnIos" onclick="filterPlatform('ios')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_ios">iOS / iPadOS</button>
-        <button id="filterBtnAndroid" onclick="filterPlatform('android')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_android">Android BYOD</button>
-      </div>
-    </div>
-
-    <!-- Grid de Tarjetas de Sistemas Operativos -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      <!-- ================= TARJETA 1: WINDOWS ================= -->
-      <div id="cardWindows" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
-        <div class="space-y-4">
-          <!-- Icono & Header -->
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center p-2.5 border border-blue-100">
-              <!-- Logo Windows -->
-              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/>
-              </svg>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-100 text-blue-800">
-              v3.10.2 Oficial
-            </span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">Windows</h3>
-            <p class="text-xs text-slate-500 font-medium">Windows 10 / 11 (64-bit / 32-bit / ARM64)</p>
-          </div>
-
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="win_card_desc">
-            Instalador oficial <code class="font-mono text-blue-700">SetupBundle.exe</code> de Safe Exam Browser. Incluye Chromium WebView2 y servicio de bloqueo Kiosk de escritorio.
-          </p>
-
-          <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="win_feat_1">Soporte WebView2 y Chromium</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="win_feat_2">Cálculo de Browser Exam Key (BEK)</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="win_feat_3">Bloqueo de atajos (Alt+Tab, Win, Ctrl+Esc)</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="mt-6 space-y-2 pt-4 border-t border-slate-100">
-          <a href="https://github.com/SafeExamBrowser/seb-win-refactoring/releases/download/v3.10.2/SEB_3.10.2.920_SetupBundle.exe" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            <span data-i18n="download_win_btn">Descargar SetupBundle (.exe)</span>
-          </a>
-          <div class="flex justify-between items-center text-[10px] text-slate-400">
-            <span>Tamaño: ~361 MB</span>
-            <a href="https://github.com/SafeExamBrowser/seb-win-refactoring/releases/tag/v3.10.2" target="_blank" class="text-blue-600 hover:underline flex items-center gap-0.5">
-              <span>Notas de versión</span> &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TARJETA 2: macOS ================= -->
-      <div id="cardMac" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-slate-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
-        <div class="space-y-4">
-          <!-- Icono & Header -->
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center p-2.5 border border-slate-200">
-              <!-- Logo Apple -->
-              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/>
-              </svg>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-800">
-              v3.7.1 Oficial
-            </span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">macOS</h3>
-            <p class="text-xs text-slate-500 font-medium">macOS 10.13 hasta Sequoia (M1/M2/M3/M4 & Intel)</p>
-          </div>
-
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="mac_card_desc">
-            Imagen oficial de disco <code class="font-mono text-slate-800">.dmg</code> de Safe Exam Browser. Compatible con Apple Silicon nativo y Universal Binary.
-          </p>
-
-          <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="mac_feat_1">Modo Evaluación AAC de Apple</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="mac_feat_2">Bloqueo de Dock, Spaces y Siri</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="mac_feat_3">Certificado criptográfico de Apple</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="mt-6 space-y-2 pt-4 border-t border-slate-100">
-          <a href="https://github.com/SafeExamBrowser/seb-mac/releases/download/3.7.1/SafeExamBrowser-3.7.1.dmg" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            <span data-i18n="download_mac_btn">Descargar DMG (.dmg)</span>
-          </a>
-          <div class="flex justify-between items-center text-[10px] text-slate-400">
-            <span>Tamaño: ~11 MB</span>
-            <a href="https://github.com/SafeExamBrowser/seb-mac/releases/tag/3.7.1" target="_blank" class="text-slate-700 hover:underline flex items-center gap-0.5">
-              <span>Notas de versión</span> &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TARJETA 3: iOS / iPadOS ================= -->
-      <div id="cardIos" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
-        <div class="space-y-4">
-          <!-- Icono & Header -->
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center p-2.5 border border-indigo-100">
-              <!-- Icono iPad / Tablet -->
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-800">
-              App Store Oficial
-            </span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">iOS / iPadOS</h3>
-            <p class="text-xs text-slate-500 font-medium">iPad & iPhone (iOS 12.0 o superior)</p>
-          </div>
-
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="ios_card_desc">
-            Distribución oficial de la Alianza Safe Exam Browser a través de Apple App Store para tablets educativas y centros escolares.
-          </p>
-
-          <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="ios_feat_1">Modo Evaluación AAC automático</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="ios_feat_2">Desactiva gestos multitarea</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="ios_feat_3">Apertura nativa de archivos .seb</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="mt-6 space-y-2 pt-4 border-t border-slate-100">
-          <a href="https://apps.apple.com/app/safeexambrowser/id1155002964" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>
-            <span data-i18n="download_ios_btn">Abrir en App Store</span>
-          </a>
-          <div class="flex justify-between items-center text-[10px] text-slate-400">
-            <span>Tienda: Apple App Store</span>
-            <button onclick="showIosQrModal()" class="text-indigo-600 hover:underline flex items-center gap-0.5">
-              <span>QR para iPad</span> &rarr;
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= TARJETA 4: ANDROID BYOD ================= -->
-      <div id="cardAndroid" class="bg-white rounded-2xl border-2 border-emerald-500/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
-        <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-bl-xl tracking-wider">
-          EducaMadrid BYOD
-        </div>
-        <div class="space-y-4">
-          <!-- Icono & Header -->
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center p-2.5 border border-emerald-100">
-              <!-- Logo Android -->
-              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/>
-              </svg>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
-              v3.7.1 Exclusivo
-            </span>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold text-slate-900">Android (Móvil/Tablet)</h3>
-            <p class="text-xs text-slate-500 font-medium">Android 8.0 hasta Android 15 (API 26-34+)</p>
-          </div>
-
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="android_card_desc">
-            Cliente especializado desarrollado para resolver la ausencia de cliente oficial en Android. Proporciona fijación de pantalla (Screen Pinning) y anti-IA.
-          </p>
-
-          <ul class="text-xs text-slate-600 space-y-1.5 pt-2 border-t border-slate-100">
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="android_feat_1">Screen Pinning & FLAG_SECURE (Sin capturas)</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="android_feat_2">Anti-IA & bloqueo de portapapeles</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span data-i18n="android_feat_3">Cabecera criptográfica RequestHash</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="mt-6 space-y-2 pt-4 border-t border-slate-100">
-          <a id="btnDownloadAndroid" href="#" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/></svg>
-            <span data-i18n="download_android_btn">Descargar APK Android</span>
-          </a>
-          <div class="flex justify-between items-center text-[10px] text-slate-400">
-            <span>Paquete firmado GitHub</span>
-            <button onclick="scrollToQrAndroid()" class="text-emerald-700 font-semibold hover:underline flex items-center gap-0.5">
-              <span>Ver QR de instalación</span> &rarr;
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Banner QR de Instalación Rápida para Móviles / Tablets en Clase -->
-    <div id="sectionAndroidQr" class="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
-      <div class="space-y-4 max-w-xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-400/30">
-          <span>📲</span> <span data-i18n="mobile_install_badge">Instalación Inmediata en el Aula</span>
-        </div>
-        <h3 class="text-2xl font-black text-white" data-i18n="mobile_install_title">
-          ¿Estás en tu ordenador y vas a examinarte en tu móvil?
-        </h3>
-        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="mobile_install_desc">
-          Apunta con la aplicación de Cámara de tu dispositivo Android hacia el código QR contiguo. Se iniciará la descarga directa del archivo APK firmado sin necesidad de conectar cables ni buscar en carpetas.
-        </p>
-        <div class="flex flex-wrap gap-4 pt-2 text-xs text-slate-400">
-          <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            <span>Descarga SSL Cloud</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            <span>Sin Publicidad</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            <span>Certificado EducaMadrid</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contenedor QR Android -->
-      <div class="bg-white p-4 rounded-2xl shadow-2xl flex flex-col items-center justify-center space-y-2 shrink-0">
-        <div id="qrDirectAndroidDownload" class="qr-box min-h-[180px] min-w-[180px] flex items-center justify-center">
-          <!-- QR renderizado con qrcode.js -->
-        </div>
-        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider" data-i18n="scan_apk_label">Escanear para Descargar APK</span>
-      </div>
-    </div>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-16">
 
     <!-- ========================================== -->
-    <!-- SECCIÓN: PASOS DE INSTALACIÓN POR EQUIPO   -->
+    <!-- SECCIÓN 1: INSTALACIÓN UNIFICADA POR EQUIPO -->
     <!-- ========================================== -->
-    <section id="install-steps" class="space-y-8 scroll-mt-24">
+    <section id="downloads" class="space-y-8 scroll-mt-24">
+      
+      <!-- Título de Sección -->
       <div class="text-center max-w-3xl mx-auto space-y-2">
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider">
-          <span>📋</span> <span data-i18n="install_badge">Paso a Paso Oficial</span>
-        </div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="install_guide_title">
-          Pasos para Instalar SEB en tu Dispositivo
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="unified_matrix_title">
+          Instalación de SEB por Dispositivo
         </h2>
-        <p class="text-slate-600 text-sm sm:text-base" data-i18n="install_guide_subtitle">
-          Sigue esta guía de 3 pasos según el sistema operativo de tu ordenador, tableta o teléfono para llegar al examen sin incidencias.
+        <p class="text-slate-600 text-sm sm:text-base" data-i18n="unified_matrix_subtitle">
+          Descarga el cliente oficial y sigue los 3 sencillos pasos según el sistema operativo de tu ordenador, tableta o teléfono.
         </p>
       </div>
 
+      <!-- Filtro de Plataformas -->
+      <div class="flex justify-center">
+        <div class="inline-flex p-1 bg-slate-200/90 rounded-2xl max-w-full overflow-x-auto text-xs sm:text-sm font-semibold text-slate-600 shadow-inner">
+          <button id="filterBtnAll" onclick="filterPlatform('all')" class="px-4 py-2 rounded-xl transition-all tab-active shadow-sm font-bold" data-i18n="filter_all">Todos los Sistemas</button>
+          <button id="filterBtnWin" onclick="filterPlatform('windows')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_win">Windows</button>
+          <button id="filterBtnMac" onclick="filterPlatform('mac')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_mac">macOS</button>
+          <button id="filterBtnIos" onclick="filterPlatform('ios')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_ios">iOS / iPadOS</button>
+          <button id="filterBtnAndroid" onclick="filterPlatform('android')" class="px-4 py-2 rounded-xl transition-all hover:text-slate-900" data-i18n="filter_android">Android BYOD</button>
+        </div>
+      </div>
+
+      <!-- Tarjetas Unificadas: Descarga + 3 Pasos -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <!-- PASOS WINDOWS -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+        <!-- ================= TARJETA 1: WINDOWS ================= -->
+        <div id="cardWindows" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
+          
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center p-1.5">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/></svg>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">Windows 10 / 11</h3>
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center p-2.5 border border-blue-100">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/>
+                </svg>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">PC / Laptop</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-100 text-blue-800" data-i18n="win_version_badge">
+                v3.10.2 Oficial
+              </span>
             </div>
 
-            <ol class="space-y-3 text-xs text-slate-600">
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="win_step1_t">Descarga el ejecutable:</strong>
-                  <p data-i18n="win_step1_d">Haz clic en <em>Descargar SetupBundle (.exe)</em> en la sección superior.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="win_step2_t">Instalador & SmartScreen:</strong>
-                  <p data-i18n="win_step2_d">Abre el archivo descargado. Si Windows Defender muestra aviso azul, pulsa <strong>"Más información"</strong> y luego <strong>"Ejecutar de todas formas"</strong>.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="win_step3_t">Listo para examinarte:</strong>
-                  <p data-i18n="win_step3_d">Haz clic en <em>"Lanzar en SEB Local"</em> en la pizarra o abre el archivo <code class="font-mono text-blue-700">.seb</code> proporcionado por tu profesor.</p>
-                </div>
-              </li>
-            </ol>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">Windows</h3>
+              <p class="text-xs text-slate-500 font-medium" data-i18n="win_subtitle">Windows 10 / 11 (64-bit / 32-bit / ARM64)</p>
+            </div>
+
+            <!-- Botón Descarga -->
+            <a href="https://github.com/SafeExamBrowser/seb-win-refactoring/releases/download/v3.10.2/SEB_3.10.2.920_SetupBundle.exe" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span data-i18n="win_download_btn">Descargar SEB para Windows (.exe)</span>
+            </a>
+
+            <!-- 3 Pasos Clave -->
+            <div class="pt-3 border-t border-slate-100 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block">Pasos Rápidos:</span>
+              <ol class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                  <span><strong class="text-slate-900" data-i18n="win_step1_t">Descarga el ejecutable:</strong> <span data-i18n="win_step1_d">Obtén el instalador oficial SetupBundle (.exe).</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                  <span><strong class="text-slate-900" data-i18n="win_step2_t">Advertencia SmartScreen:</strong> <span data-i18n="win_step2_d">Si Windows muestra aviso azul, pulsa "Más información" y "Ejecutar de todas formas".</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                  <span><strong class="text-slate-900" data-i18n="win_step3_t">Listo para examinarte:</strong> <span data-i18n="win_step3_d">Abre el enlace o archivo (.seb) proyectado por tu profesor.</span></span>
+                </li>
+              </ol>
+            </div>
           </div>
 
-          <a href="#downloads" onclick="filterPlatform('windows')" class="w-full text-center py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl transition">
-            <span data-i18n="btn_view_win_dl">Ir a Descarga Windows &rarr;</span>
-          </a>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+            <span>Tamaño: ~361 MB</span>
+            <a href="https://github.com/SafeExamBrowser/seb-win-refactoring/releases/tag/v3.10.2" target="_blank" class="text-blue-600 hover:underline">Notas de versión &rarr;</a>
+          </div>
         </div>
 
-        <!-- PASOS macOS -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+        <!-- ================= TARJETA 2: macOS ================= -->
+        <div id="cardMac" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-slate-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
+          
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center p-1.5">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">macOS</h3>
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center p-2.5 border border-slate-200">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/>
+                </svg>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800">MacBook / iMac</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-800" data-i18n="mac_version_badge">
+                v3.7.1 Oficial
+              </span>
             </div>
 
-            <ol class="space-y-3 text-xs text-slate-600">
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="mac_step1_t">Descarga la imagen DMG:</strong>
-                  <p data-i18n="mac_step1_d">Obtén el archivo <code class="font-mono text-slate-800">SafeExamBrowser-3.7.1.dmg</code> desde el botón oficial.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="mac_step2_t">Copiar a Aplicaciones:</strong>
-                  <p data-i18n="mac_step2_d">Abre el DMG y arrastra el icono de SEB a la carpeta <strong>Aplicaciones</strong> de tu Mac.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="mac_step3_t">Permiso Gatekeeper:</strong>
-                  <p data-i18n="mac_step3_d">Abre la app una vez. Si macOS la bloquea por seguridad, ve a <em>Ajustes del Sistema &rarr; Privacidad y Seguridad</em> y pulsa <strong>"Abrir igualmente"</strong>.</p>
-                </div>
-              </li>
-            </ol>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">macOS</h3>
+              <p class="text-xs text-slate-500 font-medium" data-i18n="mac_subtitle">macOS 10.13+ (Intel y Apple Silicon)</p>
+            </div>
+
+            <!-- Botón Descarga -->
+            <a href="https://github.com/SafeExamBrowser/seb-mac/releases/download/3.7.1/SafeExamBrowser-3.7.1.dmg" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span data-i18n="mac_download_btn">Descargar SEB para Mac (.dmg)</span>
+            </a>
+
+            <!-- 3 Pasos Clave -->
+            <div class="pt-3 border-t border-slate-100 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block">Pasos Rápidos:</span>
+              <ol class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                  <span><strong class="text-slate-900" data-i18n="mac_step1_t">Descarga la imagen DMG:</strong> <span data-i18n="mac_step1_d">Obtén el archivo oficial SafeExamBrowser (.dmg).</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                  <span><strong class="text-slate-900" data-i18n="mac_step2_t">Copiar a Aplicaciones:</strong> <span data-i18n="mac_step2_d">Abre el DMG y arrastra el icono a tu carpeta Aplicaciones.</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                  <span><strong class="text-slate-900" data-i18n="mac_step3_t">Permiso Gatekeeper:</strong> <span data-i18n="mac_step3_d">Si macOS avisa, pulsa "Abrir igualmente" en Privacidad y Seguridad.</span></span>
+                </li>
+              </ol>
+            </div>
           </div>
 
-          <a href="#downloads" onclick="filterPlatform('mac')" class="w-full text-center py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition">
-            <span data-i18n="btn_view_mac_dl">Ir a Descarga Mac &rarr;</span>
-          </a>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+            <span>Tamaño: ~74 MB</span>
+            <a href="https://github.com/SafeExamBrowser/seb-mac/releases/tag/3.7.1" target="_blank" class="text-slate-700 hover:underline">Notas de versión &rarr;</a>
+          </div>
         </div>
 
-        <!-- PASOS iOS / iPadOS -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+        <!-- ================= TARJETA 3: iOS / iPadOS ================= -->
+        <div id="cardIos" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
+          
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center p-1.5">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">iOS / iPadOS</h3>
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center p-2.5 border border-indigo-100">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">iPad / iPhone</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-800" data-i18n="ios_version_badge">
+                App Store Oficial
+              </span>
             </div>
 
-            <ol class="space-y-3 text-xs text-slate-600">
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="ios_step1_t">Instalar desde App Store:</strong>
-                  <p data-i18n="ios_step1_d">Pulsa en <em>Abrir en App Store</em> o escanea con la cámara del iPad el código QR específico.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="ios_step2_t">Modo Evaluación AAC:</strong>
-                  <p data-i18n="ios_step2_d">Al iniciar el examen, iOS pedirá confirmación para bloquear el dispositivo en modo seguro. Pulsa <strong>"Permitir"</strong>.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="ios_step3_t">Entrega y Cierre:</strong>
-                  <p data-i18n="ios_step3_d">Al completar y enviar el cuestionario en Moodle, el iPad saldrá automáticamente del modo bloqueado.</p>
-                </div>
-              </li>
-            </ol>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">iOS / iPadOS</h3>
+              <p class="text-xs text-slate-500 font-medium" data-i18n="ios_subtitle">iPadOS 13+ / iOS 13+ (iPad y iPhone)</p>
+            </div>
+
+            <!-- Botones Descarga y QR -->
+            <div class="space-y-2">
+              <a href="https://apps.apple.com/app/safeexambrowser/id1155002964" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>
+                <span data-i18n="ios_download_btn">Abrir en App Store</span>
+              </a>
+              <button onclick="showDownloadQrModal('ios')" class="w-full text-center py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[11px] rounded-lg transition flex items-center justify-center gap-1.5">
+                <span>📲</span> <span data-i18n="ios_qr_btn">Escanear QR para iPad</span>
+              </button>
+            </div>
+
+            <!-- 3 Pasos Clave -->
+            <div class="pt-3 border-t border-slate-100 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block">Pasos Rápidos:</span>
+              <ol class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                  <span><strong class="text-slate-900" data-i18n="ios_step1_t">Instala desde App Store:</strong> <span data-i18n="ios_step1_d">Instala gratis Safe Exam Browser en tu iPad.</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                  <span><strong class="text-slate-900" data-i18n="ios_step2_t">Modo Evaluación AAC:</strong> <span data-i18n="ios_step2_d">Al abrir el examen, pulsa "Permitir" en el aviso de Apple.</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                  <span><strong class="text-slate-900" data-i18n="ios_step3_t">Desbloqueo al entregar:</strong> <span data-i18n="ios_step3_d">Al enviar en Moodle, el iPad saldrá solo del modo bloqueado.</span></span>
+                </li>
+              </ol>
+            </div>
           </div>
 
-          <button onclick="showIosQrModal()" class="w-full text-center py-2 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition">
-            <span data-i18n="btn_view_ios_qr">Ver QR para iPad &rarr;</span>
-          </button>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+            <span>Apple Assessment Mode</span>
+            <span class="text-indigo-600 font-semibold">iPadOS Nativo</span>
+          </div>
         </div>
 
-        <!-- PASOS ANDROID BYOD -->
-        <div class="bg-white rounded-2xl border-2 border-emerald-500/80 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
+        <!-- ================= TARJETA 4: ANDROID BYOD ================= -->
+        <div id="cardAndroid" class="bg-white rounded-2xl border-2 border-emerald-500/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-bl-full pointer-events-none transition group-hover:scale-110"></div>
+          
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center p-1.5">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/></svg>
-                </div>
-                <h3 class="font-bold text-slate-900 text-base">Android BYOD</h3>
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center p-2.5 border border-emerald-200">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/>
+                </svg>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Móvil / Tablet</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800" data-i18n="and_version_badge">
+                APK Oficial EducaMadrid
+              </span>
             </div>
 
-            <ol class="space-y-3 text-xs text-slate-600">
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">1</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="and_step1_t">Descarga directa del APK:</strong>
-                  <p data-i18n="and_step1_d">Escanea el código QR negro con la cámara de tu móvil o pulsa <em>Descargar APK</em>.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">2</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="and_step2_t">Permitir Aplicación:</strong>
-                  <p data-i18n="and_step2_d">Si Android indica "origen desconocido", pulsa <strong>Ajustes</strong> y activa <strong>Permitir desde esta fuente</strong> para tu navegador.</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[11px] shrink-0 mt-0.5">3</span>
-                <div>
-                  <strong class="text-slate-900" data-i18n="and_step3_t">Anclaje y Examen:</strong>
-                  <p data-i18n="and_step3_d">Abre <em>EducaMadrid SEB</em>, pulsa <strong>Escanear QR de Examen</strong> hacia la pizarra docente y acepta el anclaje de pantalla (Screen Pinning).</p>
-                </div>
-              </li>
-            </ol>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">Android BYOD</h3>
+              <p class="text-xs text-slate-500 font-medium" data-i18n="and_subtitle">Android 8.0+ (Móviles y Tablets personales)</p>
+            </div>
+
+            <!-- Botones Descarga y QR -->
+            <div class="space-y-2">
+              <a id="btnDownloadAndroid" href="#" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span data-i18n="and_download_btn">Descargar APK Android</span>
+              </a>
+              <button onclick="showDownloadQrModal('android')" class="w-full text-center py-1.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] rounded-lg transition flex items-center justify-center gap-1.5">
+                <span>📲</span> <span data-i18n="and_qr_btn">Escanear QR para Móvil</span>
+              </button>
+            </div>
+
+            <!-- 3 Pasos Clave -->
+            <div class="pt-3 border-t border-slate-100 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block">Pasos Rápidos:</span>
+              <ol class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                  <span><strong class="text-slate-900" data-i18n="and_step1_t">Descarga el APK:</strong> <span data-i18n="and_step1_d">Descarga el APK o escanea el QR con la cámara de tu móvil.</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                  <span><strong class="text-slate-900" data-i18n="and_step2_t">Origen desconocido:</strong> <span data-i18n="and_step2_d">Si te lo pide, pulsa Ajustes y marca "Permitir desde esta fuente".</span></span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                  <span><strong class="text-slate-900" data-i18n="and_step3_t">Fijar pantalla y examen:</strong> <span data-i18n="and_step3_d">Abre la app, escanea el QR de la pizarra y acepta fijar pantalla.</span></span>
+                </li>
+              </ol>
+            </div>
           </div>
 
-          <button onclick="scrollToQrAndroid()" class="w-full text-center py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl transition">
-            <span data-i18n="btn_view_and_qr">Escanear QR de Descarga &rarr;</span>
-          </button>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+            <span>Paquete firmado GitHub</span>
+            <span class="text-emerald-700 font-bold">Anti-IA & Kiosk</span>
+          </div>
         </div>
 
       </div>
+
     </section>
 
     <!-- ========================================== -->
-    <!-- SECCIÓN 2: PIZARRA DOCENTE Y GENERADOR QR  -->
+    <!-- SECCIÓN 2: PIZARRA DE EXAMEN Y GENERADOR QR -->
     <!-- ========================================== -->
     <section id="teacher-board" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-8 scroll-mt-24">
       
+      <!-- Encabezado de la Pizarra -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
         <div>
           <div class="flex items-center gap-2">
             <span class="text-2xl">👨‍🏫</span>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="board_title">
-              Pizarra Docente: Lanzador y Conversor de Examen
+              Pizarra de Examen: Lanzador y Código QR
             </h2>
           </div>
           <p class="text-slate-600 text-sm mt-1 max-w-2xl" data-i18n="board_subtitle">
-            Convierte cualquier enlace de cuestionario Moodle EducaMadrid en protocolo seguro <code class="font-bold text-brand-700">sebs://</code> y proyecta el código QR gigante para toda el aula.
+            Pega el enlace del cuestionario Moodle EducaMadrid para generar el código QR de acceso seguro para el aula.
           </p>
         </div>
 
@@ -691,20 +460,21 @@
             <span id="btnSecText" data-i18n="btn_toggle_sec_show">Configurar Seguridad Docente</span>
           </button>
 
+          <!-- Botón Pantalla Completa Proyector -->
           <button onclick="toggleFullScreenBoard()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl shadow transition transform active:scale-95 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
             </svg>
-            <span data-i18n="btn_fullscreen_board">Modo Proyector Pantalla Completa</span>
+            <span data-i18n="btn_fullscreen_board">Pantalla Completa Proyector</span>
           </button>
         </div>
       </div>
 
-      <!-- Controles de Configuración del Examen -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Disposición 2 Columnas -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Columna Izquierda: Entradas y Herramientas -->
-        <div class="space-y-6 lg:col-span-1">
+        <!-- Columna Izquierda: Entrada URL y Parámetros (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
           
           <!-- Bloque 1: URL del Examen -->
           <div class="space-y-2">
@@ -729,7 +499,7 @@
             </div>
           </div>
 
-          <!-- Bloque 2: Protocolo Generado sebs:// y Lanzador -->
+          <!-- Bloque 2: Protocolo SEBS y Lanzador -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-slate-700" data-i18n="lbl_sebs_ready">Protocolo SEBS Generado:</span>
@@ -740,21 +510,21 @@
             <div id="displaySebsUrl" class="font-mono text-xs text-brand-800 font-bold break-all bg-white p-2.5 rounded-lg border border-slate-200 select-all">
               sebs://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=12845
             </div>
-            <div class="pt-2 flex gap-2">
-              <a id="btnTestLaunch" href="sebs://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=12845" class="w-full text-center px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition">
+            <div class="pt-1">
+              <a id="btnTestLaunch" href="sebs://aulavirtual33.educamadrid.org/mod/quiz/view.php?id=12845" class="w-full text-center block px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition">
                 🚀 <span data-i18n="btn_test_seb">Lanzar en SEB Local</span>
               </a>
             </div>
           </div>
 
-          <!-- Bloque 3: Panel Plegable de Seguridad de Sesión y Credenciales Docentes -->
+          <!-- Bloque 3: Panel Plegable de Seguridad Docente (Oculto por Defecto para Alumnos) -->
           <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 shadow-sm transition-all">
-            <!-- Barra superior del desplegable / minimizable -->
+            
             <button type="button" onclick="toggleSecurityPanel()" class="w-full flex items-center justify-between p-3.5 bg-slate-100 hover:bg-slate-200/80 transition text-left text-xs font-bold text-slate-700">
               <div class="flex items-center gap-2">
                 <span id="secPanelIcon">🔒</span>
                 <span data-i18n="sec_panel_title">Seguridad de la Sesión y PIN Docente</span>
-                <span id="secPanelBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60" data-i18n="sec_status_hidden">Oculto</span>
+                <span id="secPanelBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60" data-i18n="sec_status_hidden">Oculto para Alumnos</span>
               </div>
               <div class="flex items-center gap-1.5 text-brand-700">
                 <span id="secPanelToggleAction" class="text-[11px] font-semibold" data-i18n="sec_action_show">Desplegar</span>
@@ -764,7 +534,7 @@
               </div>
             </button>
 
-            <!-- Aviso cuando está minimizado -->
+            <!-- Aviso cuando está minimizado (Modo Aula) -->
             <div id="secPanelNotice" class="p-3 text-[11px] text-slate-500 bg-white flex items-center gap-2 border-t border-slate-200">
               <span class="text-emerald-600 font-bold shrink-0">🛡️</span>
               <span data-i18n="classroom_mode_notice">Modo Aula Protegido: Los alumnos pueden ver y escanear el QR sin visualizar el PIN de salida ni credenciales maestras.</span>
@@ -773,7 +543,6 @@
             <!-- Contenedor desplegable (oculto por defecto) -->
             <div id="teacherSecurityPanel" class="hidden p-4 space-y-4 border-t border-slate-200 bg-white transition-all">
               
-              <!-- Parámetros de Seguridad de Sesión -->
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold uppercase tracking-wider text-slate-700" data-i18n="sec_sub_title">Parámetros de Sesión</span>
@@ -787,528 +556,507 @@
                     </label>
                     <div class="relative">
                       <input type="password" id="inputSessionPin" maxlength="4" pattern="[0-9]{4}" value="8426"
-                        class="w-full px-3 py-2 pr-9 rounded-xl border border-slate-300 font-mono text-sm font-bold text-center tracking-widest text-brand-800 focus:ring-2 focus:ring-brand-700"
+                        class="w-full px-3 py-2 pr-9 rounded-lg border border-slate-300 font-mono text-center tracking-widest text-sm font-bold text-slate-800 focus:ring-2 focus:ring-brand-700 focus:border-brand-700"
                         oninput="processExamLink()">
-                      <button type="button" onclick="togglePinVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs transition" title="Ver / Ocultar PIN">
+                      <button type="button" onclick="togglePinVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Mostrar/Ocultar PIN">
                         <span id="pinEyeIcon">👁️</span>
                       </button>
                     </div>
                   </div>
-                  <div class="flex items-center pt-2 sm:pt-4">
-                    <label class="flex items-start gap-2 cursor-pointer">
-                      <input type="checkbox" id="chkAutoQuit" checked class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500" onchange="processExamLink()">
-                      <span class="text-xs text-slate-700 leading-tight">
-                        <strong data-i18n="lbl_auto_quit_title">Desbloqueo automático al entregar</strong><br>
-                        <span class="text-[10px] text-slate-500" data-i18n="lbl_auto_quit_desc">Quit URL en Moodle sin pedir PIN</span>
-                      </span>
+
+                  <div class="flex items-center">
+                    <label class="relative flex items-start gap-2 cursor-pointer mt-4 sm:mt-5">
+                      <input type="checkbox" id="chkAutoQuit" checked onchange="processExamLink()" class="mt-0.5 w-4 h-4 rounded text-brand-700 focus:ring-brand-600 border-slate-300">
+                      <div>
+                        <span class="text-xs font-bold text-slate-800 block" data-i18n="lbl_auto_quit_title">Desbloqueo automático al entregar en Moodle</span>
+                        <span class="text-[10px] text-slate-500" data-i18n="lbl_auto_quit_desc">Habilita la salida limpia sin requerir PIN docente una vez enviado el cuestionario</span>
+                      </div>
                     </label>
                   </div>
                 </div>
-                <p class="text-[10px] text-slate-500 italic" data-i18n="session_pin_note">
+
+                <p class="text-[10px] text-slate-400 leading-tight" data-i18n="session_pin_note">
                   * El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.
                 </p>
               </div>
 
-              <!-- Credenciales Docentes de Emergencia -->
-              <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
-                <div class="flex items-center gap-2 text-amber-800 font-bold text-xs">
-                  <span>⚠️</span>
-                  <span data-i18n="teacher_pin_heading">PIN Docente de Desbloqueo</span>
-                </div>
-                <p class="text-[11px] text-amber-700 leading-relaxed" data-i18n="teacher_pin_desc">
-                  Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN de sesión configurado arriba (o el PIN maestro de respaldo):
+              <!-- PIN Maestro de Emergencia -->
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs space-y-1">
+                <span class="font-bold text-amber-900 flex items-center gap-1.5" data-i18n="teacher_pin_heading">
+                  🔑 PIN Maestro de Desbloqueo de Emergencia
+                </span>
+                <p class="text-[11px] text-amber-800 leading-tight" data-i18n="teacher_pin_desc">
+                  Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN maestro:
                 </p>
-                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-amber-200">
-                  <span class="text-xs text-slate-500" data-i18n="lbl_active_pin">PIN de Sesión Activo:</span>
-                  <code id="displayActivePin" class="text-base font-black font-mono text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded">8426</code>
-                </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
-                  <span>PIN Maestro de Respaldo:</span>
-                  <code class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">8426</code>
+                <div class="pt-1 flex items-center gap-3">
+                  <span class="text-[10px] uppercase font-bold text-slate-500" data-i18n="lbl_default_pin">PIN Maestro:</span>
+                  <code class="px-2 py-0.5 rounded bg-white font-mono font-black text-amber-900 border border-amber-300 shadow-sm text-xs">8426</code>
+                  <span class="text-[10px] uppercase font-bold text-slate-500 ml-2" data-i18n="lbl_active_pin">PIN de Sesión Activo:</span>
+                  <code id="displayActivePin" class="px-2 py-0.5 rounded bg-white font-mono font-black text-brand-800 border border-brand-200 shadow-sm text-xs">8426</code>
                 </div>
               </div>
 
-              <!-- Botón rápido para volver a minimizar -->
-              <button type="button" onclick="toggleSecurityPanel()" class="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
-                <span>▲</span> <span data-i18n="btn_minimize_sec">Minimizar Seguridad (Modo Aula)</span>
-              </button>
             </div>
+
           </div>
 
         </div>
 
-        <!-- Columna Derecha: Proyector Gigante de Pizarra -->
-        <div id="boardProjectorCard" class="lg:col-span-2 bg-gradient-to-b from-slate-950 via-slate-900 to-brand-950 text-white p-6 sm:p-10 rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center space-y-6 border border-slate-800 transition-all">
+        <!-- Columna Derecha: Proyector de Código QR Gigante (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col items-center justify-center">
+          <div id="boardProjectorCard" class="w-full bg-gradient-to-br from-brand-900 via-slate-900 to-brand-950 text-white rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center space-y-6 shadow-xl border border-white/10 relative overflow-hidden">
+            
+            <div class="text-center space-y-1">
+              <span class="text-[11px] font-bold uppercase tracking-widest text-cyan-300">Aula Virtual EducaMadrid</span>
+              <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight" data-i18n="projector_title">
+                Escanea para Iniciar tu Examen
+              </h3>
+              <p class="text-xs text-slate-300 max-w-md mx-auto" data-i18n="projector_desc">
+                Abre la aplicación Safe Exam Browser o EducaMadrid SEB y apunta con la cámara hacia este código.
+              </p>
+            </div>
+
+            <!-- Contenedor del Código QR -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-2xl transition-transform hover:scale-105 duration-300">
+              <div id="qrProjectorContainer" class="qr-box min-h-[220px] min-w-[220px] sm:min-h-[260px] sm:min-w-[260px] flex items-center justify-center">
+                <!-- QR renderizado con qrcode.js -->
+              </div>
+            </div>
+
+            <!-- Aviso de Seguridad Inferior -->
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-xs font-semibold text-slate-200 border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 badge-pulse shrink-0"></span>
+              <span data-i18n="security_notice">Bloqueo de Pantalla Completa y Verificación Criptográfica Activos</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECCIÓN 3: GUÍA MOODLE Y PREGUNTAS FRECUENTES -->
+    <!-- ========================================== -->
+    <section id="guide-faq" class="space-y-10 scroll-mt-24">
+      
+      <!-- Título de Sección -->
+      <div class="text-center max-w-3xl mx-auto space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="guide_faq_title">
+          Guía para Docentes y Preguntas Frecuentes
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base" data-i18n="guide_faq_subtitle">
+          Todo lo necesario para configurar cuestionarios en Aula Virtual y resolver dudas comunes de los alumnos.
+        </p>
+      </div>
+
+      <!-- Parte A: 4 Pasos para el Docente en Moodle -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span>📚</span> <span data-i18n="moodle_section_title">Configuración en Moodle EducaMadrid (4 Pasos)</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           
-          <div class="space-y-1">
-            <span class="px-3.5 py-1 bg-cyan-500/20 text-cyan-300 text-[11px] font-black uppercase tracking-widest rounded-full border border-cyan-400/30">
-              AULA VIRTUAL EDUCAMADRID
-            </span>
-            <h3 class="text-2xl sm:text-3xl font-black text-white mt-2" data-i18n="projector_title">
-              Escanea para Iniciar tu Examen Seguro
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto" data-i18n="projector_desc">
-              Abre el cliente Safe Exam Browser o la app EducaMadrid SEB y apunta con la cámara hacia este código.
-            </p>
-          </div>
-
-          <!-- Lienzo del QR Dinámico -->
-          <div class="p-5 sm:p-7 bg-white rounded-3xl shadow-2xl inline-block border-4 border-slate-100">
-            <div id="qrProjectorContainer" class="qr-box min-h-[240px] min-w-[240px] sm:min-h-[290px] sm:min-w-[290px] flex items-center justify-center">
-              <!-- Renderizado dinámico -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="space-y-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 font-black text-xs flex items-center justify-center">1</span>
+              <h4 class="text-sm font-bold text-slate-900" data-i18n="step1_title">1. Ajustes del Cuestionario</h4>
+              <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step1_desc">
+                En tu curso de Aula Virtual, entra en el Cuestionario y haz clic en Editar ajustes. Despliega la sección Safe Exam Browser.
+              </p>
             </div>
           </div>
 
-          <!-- Garantías de Ciberseguridad -->
-          <div class="max-w-md text-[11px] text-slate-400 space-y-1.5 border-t border-slate-800/80 pt-4">
-            <div class="flex items-center justify-center gap-2 text-cyan-300 font-semibold">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-              <span data-i18n="security_notice">Cálculo Criptográfico Activo (X-SafeExamBrowser-RequestHash)</span>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="space-y-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 font-black text-xs flex items-center justify-center">2</span>
+              <h4 class="text-sm font-bold text-slate-900" data-i18n="step2_title">2. Activar Modo SEB</h4>
+              <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step2_desc">
+                En "Requerir el uso de Safe Exam Browser", selecciona "Sí - Configurar manualmente" o "Sí - Usar configuración de SEB existente".
+              </p>
             </div>
-            <p data-i18n="security_notice_sub">Al escanear este código, el navegador bloqueará cualquier otra aplicación hasta que se entregue el cuestionario.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="space-y-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 font-black text-xs flex items-center justify-center">3</span>
+              <h4 class="text-sm font-bold text-slate-900" data-i18n="step3_title">3. Claves Criptográficas (Opcional)</h4>
+              <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step3_desc">
+                Si usas verificación estricta de examen, añade el hash Browser Exam Key (BEK) o Config Key.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="space-y-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 font-black text-xs flex items-center justify-center">4</span>
+              <h4 class="text-sm font-bold text-slate-900" data-i18n="step4_title">4. Proyectar Código QR</h4>
+              <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step4_desc">
+                Pega la dirección del cuestionario en la Pizarra de este portal y proyecta el QR gigante para que los alumnos lo escaneen.
+              </p>
+            </div>
           </div>
 
         </div>
-
       </div>
 
-    </section>
+      <!-- Parte B: Preguntas Frecuentes y Soporte -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span>💡</span> <span data-i18n="faq_section_title">Preguntas Frecuentes y Solución de Problemas</span>
+        </h3>
 
-    <!-- ========================================== -->
-    <!-- SECCIÓN 3: GUÍA DOCENTE DE MOODLE EDUCAMADRID -->
-    <!-- ========================================== -->
-    <section id="moodle-guide" class="space-y-6 scroll-mt-24">
-      <div class="text-center max-w-3xl mx-auto space-y-2">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="moodle_guide_title">
-          Cómo Configurar el Examen en Moodle EducaMadrid
-        </h2>
-        <p class="text-slate-600 text-sm sm:text-base" data-i18n="moodle_guide_subtitle">
-          Guía paso a paso para docentes en Aulas Virtuales con Safe Exam Browser habilitado.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-black text-sm flex items-center justify-center">1</span>
-            <h3 class="text-base font-bold text-slate-900" data-i18n="step1_title">Ajustes del Cuestionario</h3>
-            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step1_desc">
-              En tu curso de EducaMadrid, entra en el Cuestionario y haz clic en <strong>Editar ajustes</strong>. Despliega la pestaña <strong>Safe Exam Browser</strong>.
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>🤖</span> <span data-i18n="faq1_q">¿Cómo instalo el APK en Android si indica "Aplicación desconocida"?</span>
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq1_a">
+              Al tratarse de una distribución educativa fuera de Play Store, Android solicita permiso de seguridad. Pulsa "Ajustes" en la ventana emergente y activa "Permitir la instalación de aplicaciones desconocidas" para tu navegador.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-brand-700 font-semibold">
-            Aula Virtual 3.x / 4.x
-          </div>
-        </div>
 
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-black text-sm flex items-center justify-center">2</span>
-            <h3 class="text-base font-bold text-slate-900" data-i18n="step2_title">Activar Modo SEB</h3>
-            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step2_desc">
-              En <em>"Requerir el uso de Safe Exam Browser"</em>, selecciona <strong>"Sí - Configurar manualmente"</strong> o <strong>"Sí - Usar configuración de SEB existente"</strong>.
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>🛑</span> <span data-i18n="faq2_q">¿Cómo desanclo la pantalla en Android si no salgo automáticamente?</span>
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq2_a">
+              Mantén pulsados simultáneamente los botones Atrás y Aplicaciones recientes (o desliza hacia arriba y mantén pulsado con navegación gestual) e introduce tu PIN o huella del teléfono.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-brand-700 font-semibold">
-            Modo Kiosk Requerido
-          </div>
-        </div>
 
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-black text-sm flex items-center justify-center">3</span>
-            <h3 class="text-base font-bold text-slate-900" data-i18n="step3_title">Claves Criptográficas (BEK)</h3>
-            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step3_desc">
-              Si usas validación estricta, copia el hash SHA-256 de la Browser Exam Key o Config Key para que solo el cliente autorizado pueda cargar el examen.
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>🛡️</span> <span data-i18n="faq3_q">¿Windows Defender SmartScreen muestra una advertencia azul?</span>
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq3_a">
+              En Windows 10/11, si SmartScreen muestra aviso de protección, pulsa en "Más información" y luego en "Ejecutar de todas formas". El ejecutable procede del repositorio oficial de SafeExamBrowser.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-brand-700 font-semibold">
-            Seguridad Anti-Spoofing
-          </div>
-        </div>
 
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-black text-sm flex items-center justify-center">4</span>
-            <h3 class="text-base font-bold text-slate-900" data-i18n="step4_title">Proyección o Enlace</h3>
-            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="step4_desc">
-              Pega la URL en la <em>Pizarra Docente</em> de este portal y proyecta el código QR o comparte el archivo de configuración <code class="font-mono text-brand-700">.seb</code> con los alumnos.
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>🍏</span> <span data-i18n="faq4_q">¿Qué permisos solicita macOS para ejecutar Safe Exam Browser?</span>
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq4_a">
+              Arrastra la app a Aplicaciones. Si Gatekeeper impide la apertura, abre Ajustes del Sistema → Privacidad y Seguridad y pulsa "Abrir igualmente" en la sección inferior.
             </p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-brand-700 font-semibold">
-            Inicio en 1 Clic
-          </div>
+
         </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- SECCIÓN 4: PREGUNTAS FRECUENTES Y SOPORTE   -->
-    <!-- ========================================== -->
-    <section id="faqs" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-6 scroll-mt-24">
-      <div class="text-center max-w-3xl mx-auto space-y-2">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="faq_title">
-          Preguntas Frecuentes y Resolución de Incidencias
-        </h2>
-        <p class="text-slate-600 text-sm" data-i18n="faq_subtitle">
-          Soluciones a las dudas más comunes durante la realización de exámenes en EducaMadrid.
-        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-        
-        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <span>🤖</span> <span data-i18n="faq1_q">¿Cómo instalo el APK en Android si dice "Aplicación desconocida"?</span>
-          </h3>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq1_a">
-            Al ser una distribución de centro educativo no subida a Play Store, Android solicita permiso. Pulsa en <em>"Ajustes"</em> en el mensaje y activa la casilla <em>"Permitir la instalación de aplicaciones desconocidas"</em> para tu navegador o gestor de archivos.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <span>🛑</span> <span data-i18n="faq2_q">¿Cómo salgo de la pantalla fijada en Android al terminar?</span>
-          </h3>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq2_a">
-            Para desanclar en Android, mantén pulsados simultáneamente los botones <strong>Atrás</strong> y <strong>Aplicaciones recientes</strong> (o desliza hacia arriba y mantén pulsado si usas navegación por gestos) e introduce tu patrón o PIN de bloqueo personal.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <span>🛡️</span> <span data-i18n="faq3_q">¿Windows Defender SmartScreen muestra advertencia?</span>
-          </h3>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq3_a">
-            En Windows 10/11, si SmartScreen muestra una ventana azul protectora, haz clic en <strong>"Más información"</strong> y luego en <strong>"Ejecutar de todas formas"</strong>. El ejecutable proviene directamente del repositorio oficial de SafeExamBrowser.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <span>🍏</span> <span data-i18n="faq4_q">¿Qué permisos necesita macOS para SEB?</span>
-          </h3>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="faq4_a">
-            macOS requiere arrastrar la aplicación a la carpeta <em>Aplicaciones</em>. Si aparece el aviso de seguridad de Gatekeeper, abre <em>Ajustes del Sistema &rarr; Privacidad y Seguridad</em> y pulsa en <em>"Abrir igualmente"</em>.
-          </p>
-        </div>
-
-      </div>
     </section>
 
   </main>
 
   <!-- ========================================== -->
-  <!-- MODAL: QR PARA iPAD / iPHONE (APP STORE)   -->
+  <!-- MODAL UNIFICADO: QR DESCARGA MÓVIL/TABLET  -->
   <!-- ========================================== -->
-  <div id="modalIosQr" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full space-y-4 text-center shadow-2xl border border-slate-100">
-      <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>
-      </div>
-      <h3 class="text-xl font-bold text-slate-900" data-i18n="modal_ios_title">Instalar SEB en iPad / iPhone</h3>
-      <p class="text-xs text-slate-600" data-i18n="modal_ios_desc">Apunta con la cámara de tu iPad para abrir directamente Safe Exam Browser en la App Store de Apple.</p>
+  <div id="modalDownloadQr" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full space-y-4 text-center shadow-2xl border border-slate-100 animate-in fade-in zoom-in duration-200">
       
-      <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 inline-block">
-        <div id="qrIosModalContainer" class="qr-box min-h-[180px] min-w-[180px] flex items-center justify-center"></div>
+      <div id="modalQrIcon" class="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center"></div>
+      
+      <h3 id="modalQrTitle" class="text-xl font-bold text-slate-900"></h3>
+      <p id="modalQrDesc" class="text-xs text-slate-600 leading-relaxed"></p>
+      
+      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-inner">
+        <div id="modalQrContainer" class="qr-box min-h-[180px] min-w-[180px] flex items-center justify-center"></div>
       </div>
 
-      <div class="pt-2">
-        <button onclick="closeIosQrModal()" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition">
+      <div class="pt-2 flex flex-col gap-2">
+        <a id="modalQrDirectLink" href="#" class="w-full py-2.5 px-4 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95" target="_blank" rel="noopener">
+          Abrir Enlace Directo
+        </a>
+        <button onclick="closeDownloadQrModal()" class="w-full py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition" data-i18n="modal_close_btn">
           Cerrar
         </button>
       </div>
+
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- PIE DE PÁGINA INSTITUCIONAL               -->
+  <!-- PIE DE PÁGINA                              -->
   <!-- ========================================== -->
   <footer class="bg-white border-t border-slate-200 py-8 text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div class="space-y-1">
-        <p class="font-bold text-slate-800">EducaMadrid SEB Portal • Comunidad de Madrid</p>
-        <p data-i18n="footer_legal">Compatible con Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) y Aula Virtual Moodle.</p>
-      </div>
-      <div class="flex items-center space-x-4 text-slate-600">
-        <a href="https://github.com/jmgurpegui/SEB" target="_blank" class="hover:text-brand-700 flex items-center gap-1">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>Repositorio GitHub</span>
-        </a>
-        <a href="https://safeexambrowser.org" target="_blank" class="hover:text-brand-700">SafeExamBrowser.org</a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p data-i18n="footer_text">
+        Ecosistema Safe Exam Browser para EducaMadrid • Comunidad de Madrid. Diseñado para garantizar la integridad académica y la accesibilidad universal en evaluaciones digitales.
+      </p>
+      <div class="flex items-center space-x-4 shrink-0">
+        <a href="https://github.com/SafeExamBrowser" target="_blank" rel="noopener" class="hover:text-slate-900 hover:underline">GitHub SEB Oficial</a>
+        <span>•</span>
+        <a href="https://www.educa2.madrid.org/" target="_blank" rel="noopener" class="hover:text-slate-900 hover:underline">EducaMadrid</a>
       </div>
     </div>
   </footer>
 
   <!-- ========================================== -->
-  <!-- SCRIPT MULTILINGÜE, DETECCIÓN Y LÓGICA     -->
+  <!-- LÓGICA DE APLICACIÓN                       -->
   <!-- ========================================== -->
   <script>
-    // DICCIONARIO INTERNACIONALIZADO (ES / EN)
+    // 1. DICCIONARIO BILINGÜE
     const translations = {
       es: {
-        header_subtitle: "Portal Oficial de Evaluación Segura • Aula Virtual Moodle",
-        nav_downloads: "Descargas",
-        nav_board: "Pizarra Docente",
-        nav_moodle: "Configuración Moodle",
-        nav_faq: "Ayuda y FAQ",
+        header_subtitle: "Portal de Evaluación Segura • Aula Virtual Moodle",
+        nav_install: "Instalar SEB",
+        nav_board: "Pizarra de Examen",
+        nav_help: "Guía y Ayuda",
         quick_board_btn: "Lanzador Pizarra",
+
         hero_badge: "Ecosistema Oficial Safe Exam Browser • Alianza EducaMadrid",
         hero_title_1: "Exámenes Seguros en Moodle",
         hero_title_2: "Para Todos los Dispositivos",
-        hero_desc: "Bloqueo de pantalla completa (Kiosk), anti-capturas, prevención contra IA y verificación criptográfica (BEK/CKH) para Windows, macOS, iPadOS y Android personal (BYOD).",
+        hero_desc: "Bloqueo de pantalla completa (Kiosk), anti-copia, prevención contra IA y verificación criptográfica (BEK/CKH) para Windows, macOS, iPadOS y Android BYOD.",
         os_detected_label: "Tu Dispositivo Detectado:",
         download_now_btn: "Descargar para mi equipo",
-        os_matrix_title: "Instaladores Oficiales por Sistema Operativo",
-        os_matrix_subtitle: "Selecciona tu plataforma para descargar el cliente certificado compatible con el protocolo SEB de EducaMadrid.",
+        hero_teacher_link: "¿Eres docente? Ir a la Pizarra de Examen ↓",
+
+        unified_matrix_title: "Instalación de SEB por Dispositivo",
+        unified_matrix_subtitle: "Descarga el cliente oficial y sigue los 3 sencillos pasos según el sistema operativo de tu ordenador, tableta o teléfono.",
         filter_all: "Todos los Sistemas",
         filter_win: "Windows",
         filter_mac: "macOS",
         filter_ios: "iOS / iPadOS",
         filter_android: "Android BYOD",
-        win_card_desc: "Instalador oficial SetupBundle.exe de Safe Exam Browser. Incluye Chromium WebView2 y servicio de bloqueo Kiosk de escritorio.",
-        win_feat_1: "Soporte WebView2 y Chromium",
-        win_feat_2: "Cálculo de Browser Exam Key (BEK)",
-        win_feat_3: "Bloqueo de atajos (Alt+Tab, Win, Ctrl+Esc)",
-        download_win_btn: "Descargar SetupBundle (.exe)",
-        mac_card_desc: "Imagen oficial de disco .dmg de Safe Exam Browser. Compatible con Apple Silicon nativo y Universal Binary.",
-        mac_feat_1: "Modo Evaluación AAC de Apple",
-        mac_feat_2: "Bloqueo de Dock, Spaces y Siri",
-        mac_feat_3: "Certificado criptográfico de Apple",
-        download_mac_btn: "Descargar DMG (.dmg)",
-        ios_card_desc: "Distribución oficial de la Alianza Safe Exam Browser a través de Apple App Store para tablets educativas y centros escolares.",
-        ios_feat_1: "Modo Evaluación AAC automático",
-        ios_feat_2: "Desactiva gestos multitarea",
-        ios_feat_3: "Apertura nativa de archivos .seb",
-        download_ios_btn: "Abrir en App Store",
-        android_card_desc: "Cliente especializado desarrollado para resolver la ausencia de cliente oficial en Android. Proporciona fijación de pantalla (Screen Pinning) y anti-IA.",
-        android_feat_1: "Screen Pinning & FLAG_SECURE (Sin capturas)",
-        android_feat_2: "Anti-IA & bloqueo de portapapeles",
-        android_feat_3: "Cabecera criptográfica RequestHash",
-        download_android_btn: "Descargar APK Android",
-        scan_apk_label: "Escanear para Descargar APK",
-        mobile_install_badge: "Instalación Inmediata en el Aula",
-        mobile_install_title: "¿Estás en tu ordenador y vas a examinarte en tu móvil?",
-        mobile_install_desc: "Apunta con la aplicación de Cámara de tu dispositivo Android hacia el código QR contiguo. Se iniciará la descarga directa del archivo APK firmado sin necesidad de conectar cables ni buscar en carpetas.",
-        board_title: "Pizarra Docente: Lanzador y Conversor de Examen",
-        board_subtitle: "Convierte cualquier enlace de cuestionario Moodle EducaMadrid en protocolo seguro sebs:// y proyecta el código QR gigante para toda el aula.",
-        btn_fullscreen_board: "Modo Proyector Pantalla Completa",
+
+        // Windows
+        win_version_badge: "v3.10.2 Oficial",
+        win_subtitle: "Windows 10 / 11 (64-bit / 32-bit / ARM64)",
+        win_download_btn: "Descargar SEB para Windows (.exe)",
+        win_step1_t: "1. Descarga el ejecutable:",
+        win_step1_d: "Obtén el instalador oficial SetupBundle (.exe).",
+        win_step2_t: "2. Advertencia SmartScreen:",
+        win_step2_d: "Si Windows muestra aviso azul, pulsa \"Más información\" y \"Ejecutar de todas formas\".",
+        win_step3_t: "3. Listo para examinarte:",
+        win_step3_d: "Abre el enlace o archivo (.seb) proyectado por tu profesor.",
+
+        // macOS
+        mac_version_badge: "v3.7.1 Oficial",
+        mac_subtitle: "macOS 10.13+ (Intel y Apple Silicon)",
+        mac_download_btn: "Descargar SEB para Mac (.dmg)",
+        mac_step1_t: "1. Descarga la imagen DMG:",
+        mac_step1_d: "Obtén el archivo oficial SafeExamBrowser (.dmg).",
+        mac_step2_t: "2. Copiar a Aplicaciones:",
+        mac_step2_d: "Abre el DMG y arrastra el icono a tu carpeta Aplicaciones.",
+        mac_step3_t: "3. Permiso Gatekeeper:",
+        mac_step3_d: "Si macOS avisa, pulsa \"Abrir igualmente\" en Privacidad y Seguridad.",
+
+        // iOS / iPadOS
+        ios_version_badge: "App Store Oficial",
+        ios_subtitle: "iPadOS 13+ / iOS 13+ (iPad y iPhone)",
+        ios_download_btn: "Abrir en App Store",
+        ios_qr_btn: "Escanear QR para iPad",
+        ios_step1_t: "1. Instala desde App Store:",
+        ios_step1_d: "Instala gratis Safe Exam Browser en tu iPad.",
+        ios_step2_t: "2. Modo Evaluación AAC:",
+        ios_step2_d: "Al abrir el examen, pulsa \"Permitir\" en el aviso de Apple.",
+        ios_step3_t: "3. Desbloqueo al entregar:",
+        ios_step3_d: "Al enviar en Moodle, el iPad saldrá solo del modo bloqueado.",
+
+        // Android BYOD
+        and_version_badge: "APK Oficial EducaMadrid",
+        and_subtitle: "Android 8.0+ (Móviles y Tablets personales)",
+        and_download_btn: "Descargar APK Android",
+        and_qr_btn: "Escanear QR para Móvil",
+        and_step1_t: "1. Descarga el APK:",
+        and_step1_d: "Descarga el APK o escanea el QR con la cámara de tu móvil.",
+        and_step2_t: "2. Origen desconocido:",
+        and_step2_d: "Si te lo pide, pulsa Ajustes y marca \"Permitir desde esta fuente\".",
+        and_step3_t: "3. Fijar pantalla y examen:",
+        and_step3_d: "Abre la app, escanea el QR de la pizarra y acepta fijar pantalla.",
+
+        modal_close_btn: "Cerrar",
+
+        // Pizarra Docente
+        board_title: "Pizarra de Examen: Lanzador y Código QR",
+        board_subtitle: "Pega el enlace del cuestionario Moodle EducaMadrid para generar el código QR de acceso seguro para el aula.",
+        btn_toggle_sec_show: "Configurar Seguridad Docente",
+        btn_toggle_sec_hide: "Minimizar Seguridad (Modo Aula)",
+        btn_fullscreen_board: "Pantalla Completa Proyector",
         lbl_input_url: "URL del Examen en Aula Virtual EducaMadrid:",
         btn_update_qr: "Actualizar QR",
-        sec_params_title: "Seguridad de la Sesión",
-        lbl_session_pin: "PIN de Salida (4 dígitos):",
-        lbl_auto_quit_title: "Desbloqueo automático al entregar",
-        lbl_auto_quit_desc: "Quit URL en Moodle sin pedir PIN",
-        session_pin_note: "* El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.",
-        lbl_active_pin: "PIN de Sesión Activo:",
         lbl_sebs_ready: "Protocolo SEBS Generado:",
         btn_copy: "Copiar",
         btn_test_seb: "Lanzar en SEB Local",
-        teacher_pin_heading: "PIN Docente de Desbloqueo",
-        teacher_pin_desc: "Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN docente por defecto:",
-        lbl_default_pin: "PIN Maestro:",
-        projector_title: "Escanea para Iniciar tu Examen Seguro",
-        projector_desc: "Abre el cliente Safe Exam Browser o la app EducaMadrid SEB y apunta con la cámara hacia este código.",
-        security_notice: "Cálculo Criptográfico Activo (X-SafeExamBrowser-RequestHash)",
-        security_notice_sub: "Al escanear este código, el navegador bloqueará cualquier otra aplicación hasta que se entregue el cuestionario.",
-        moodle_guide_title: "Cómo Configurar el Examen en Moodle EducaMadrid",
-        moodle_guide_subtitle: "Guía paso a paso para docentes en Aulas Virtuales con Safe Exam Browser habilitado.",
-        step1_title: "Ajustes del Cuestionario",
-        step1_desc: "En tu curso de EducaMadrid, entra en el Cuestionario y haz clic en Editar ajustes. Despliega la pestaña Safe Exam Browser.",
-        step2_title: "Activar Modo SEB",
-        step2_desc: "En \"Requerir el uso de Safe Exam Browser\", selecciona \"Sí - Configurar manualmente\" o \"Sí - Usar configuración de SEB existente\".",
-        step3_title: "Claves Criptográficas (BEK)",
-        step3_desc: "Si usas validación estricta, copia el hash SHA-256 de la Browser Exam Key o Config Key para que solo el cliente autorizado pueda cargar el examen.",
-        step4_title: "Proyección o Enlace",
-        step4_desc: "Pega la URL en la Pizarra Docente de este portal y proyecta el código QR o comparte el archivo de configuración .seb con los alumnos.",
-        faq_title: "Preguntas Frecuentes y Resolución de Incidencias",
-        faq_subtitle: "Soluciones a las dudas más comunes durante la realización de exámenes en EducaMadrid.",
-        faq1_q: "¿Cómo instalo el APK en Android si dice \"Aplicación desconocida\"?",
-        faq1_a: "Al ser una distribución de centro educativo no subida a Play Store, Android solicita permiso. Pulsa en \"Ajustes\" en el mensaje y activa la casilla \"Permitir la instalación de aplicaciones desconocidas\" para tu navegador o gestor de archivos.",
-        faq2_q: "¿Cómo salgo de la pantalla fijada en Android al terminar?",
-        faq2_a: "Para desanclar en Android, mantén pulsados simultáneamente los botones Atrás y Aplicaciones recientes (o desliza hacia arriba y mantén pulsado si usas navegación por gestos) e introduce tu patrón o PIN de bloqueo personal.",
-        faq3_q: "¿Windows Defender SmartScreen muestra advertencia?",
-        faq3_a: "En Windows 10/11, si SmartScreen muestra una ventana azul protectora, haz clic en \"Más información\" y luego en \"Ejecutar de todas formas\". El ejecutable proviene directamente del repositorio oficial de SafeExamBrowser.",
-        faq4_q: "¿Qué permisos necesita macOS para SEB?",
-        faq4_a: "macOS requiere arrastrar la aplicación a la carpeta Aplicaciones. Si aparece el aviso de seguridad de Gatekeeper, abre Ajustes del Sistema -> Privacidad y Seguridad y pulsa en \"Abrir igualmente\".",
-        modal_ios_title: "Instalar SEB en iPad / iPhone",
-        modal_ios_desc: "Apunta con la cámara de tu iPad para abrir directamente Safe Exam Browser en la App Store de Apple.",
-        nav_steps: "Pasos de Instalación",
-        install_badge: "Paso a Paso Oficial",
-        install_guide_title: "Pasos para Instalar SEB en tu Dispositivo",
-        install_guide_subtitle: "Sigue esta guía de 3 pasos según el sistema operativo de tu ordenador, tableta o teléfono para llegar al examen sin incidencias.",
-        win_step1_t: "Descarga el ejecutable:",
-        win_step1_d: "Haz clic en Descargar SetupBundle (.exe) en la sección superior.",
-        win_step2_t: "Instalador & SmartScreen:",
-        win_step2_d: "Abre el archivo descargado. Si Windows Defender muestra aviso azul, pulsa \"Más información\" y luego \"Ejecutar de todas formas\".",
-        win_step3_t: "Listo para examinarte:",
-        win_step3_d: "Haz clic en \"Lanzar en SEB Local\" en la pizarra o abre el archivo .seb proporcionado por tu profesor.",
-        btn_view_win_dl: "Ir a Descarga Windows →",
-        mac_step1_t: "Descarga la imagen DMG:",
-        mac_step1_d: "Obtén el archivo SafeExamBrowser-3.7.1.dmg desde el botón oficial.",
-        mac_step2_t: "Copiar a Aplicaciones:",
-        mac_step2_d: "Abre el DMG y arrastra el icono de SEB a la carpeta Aplicaciones de tu Mac.",
-        mac_step3_t: "Permiso Gatekeeper:",
-        mac_step3_d: "Abre la app una vez. Si macOS la bloquea por seguridad, ve a Ajustes del Sistema → Privacidad y Seguridad y pulsa \"Abrir igualmente\".",
-        btn_view_mac_dl: "Ir a Descarga Mac →",
-        ios_step1_t: "Instalar desde App Store:",
-        ios_step1_d: "Pulsa en Abrir en App Store o escanea con la cámara del iPad el código QR específico.",
-        ios_step2_t: "Modo Evaluación AAC:",
-        ios_step2_d: "Al iniciar el examen, iOS pedirá confirmación para bloquear el dispositivo en modo seguro. Pulsa \"Permitir\".",
-        ios_step3_t: "Entrega y Cierre:",
-        ios_step3_d: "Al completar y enviar el cuestionario en Moodle, el iPad saldrá automáticamente del modo bloqueado.",
-        btn_view_ios_qr: "Ver QR para iPad →",
-        and_step1_t: "Descarga directa del APK:",
-        and_step1_d: "Escanea el código QR negro con la cámara de tu móvil o pulsa Descargar APK.",
-        and_step2_t: "Permitir Aplicación:",
-        and_step2_d: "Si Android indica \"origen desconocido\", pulsa Ajustes y activa Permitir desde esta fuente para tu navegador.",
-        and_step3_t: "Anclaje y Examen:",
-        and_step3_d: "Abre EducaMadrid SEB, pulsa Escanear QR de Examen hacia la pizarra docente y acepta el anclaje de pantalla (Screen Pinning).",
-        btn_view_and_qr: "Escanear QR de Descarga →",
-        btn_toggle_sec_show: "Configurar Seguridad Docente",
-        btn_toggle_sec_hide: "Minimizar Seguridad (Modo Aula)",
+
         sec_panel_title: "Seguridad de la Sesión y PIN Docente",
         sec_status_hidden: "Oculto para Alumnos",
         sec_status_visible: "Visible",
         sec_action_show: "Desplegar",
         sec_action_hide: "Minimizar",
-        sec_sub_title: "Parámetros de Sesión",
-        btn_minimize_sec: "Minimizar Seguridad (Modo Aula)",
         classroom_mode_notice: "Modo Aula Protegido: Los alumnos pueden ver y escanear el QR sin visualizar el PIN de salida ni credenciales maestras.",
-        footer_legal: "Compatible con Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) y Aula Virtual Moodle."
+        sec_sub_title: "Parámetros de Sesión",
+        lbl_session_pin: "PIN de Salida (4 dígitos):",
+        lbl_auto_quit_title: "Desbloqueo automático al entregar en Moodle",
+        lbl_auto_quit_desc: "Habilita la salida limpia sin requerir PIN docente una vez enviado el cuestionario",
+        session_pin_note: "* El PIN se envía cifrado como hash SHA-256 en el QR y la app lo elimina de la URL antes de cargar Moodle.",
+        lbl_active_pin: "PIN de Sesión Activo:",
+        teacher_pin_heading: "🔑 PIN Maestro de Desbloqueo de Emergencia",
+        teacher_pin_desc: "Si un alumno pierde el foco o el dispositivo se bloquea por infracción, introduce en su pantalla el PIN maestro:",
+        lbl_default_pin: "PIN Maestro:",
+
+        projector_title: "Escanea para Iniciar tu Examen",
+        projector_desc: "Abre la aplicación Safe Exam Browser o EducaMadrid SEB y apunta con la cámara hacia este código.",
+        security_notice: "Bloqueo de Pantalla Completa y Verificación Criptográfica Activos",
+
+        // Guía Moodle & FAQ
+        guide_faq_title: "Guía para Docentes y Preguntas Frecuentes",
+        guide_faq_subtitle: "Todo lo necesario para configurar cuestionarios en Aula Virtual y resolver dudas comunes de los alumnos.",
+        moodle_section_title: "Configuración en Moodle EducaMadrid (4 Pasos)",
+        step1_title: "1. Ajustes del Cuestionario",
+        step1_desc: "En tu curso de Aula Virtual, entra en el Cuestionario y haz clic en Editar ajustes. Despliega la sección Safe Exam Browser.",
+        step2_title: "2. Activar Modo SEB",
+        step2_desc: "En \"Requerir el uso de Safe Exam Browser\", selecciona \"Sí - Configurar manualmente\" o \"Sí - Usar configuración de SEB existente\".",
+        step3_title: "3. Claves Criptográficas (Opcional)",
+        step3_desc: "Si usas verificación estricta de examen, añade el hash Browser Exam Key (BEK) o Config Key.",
+        step4_title: "4. Proyectar Código QR",
+        step4_desc: "Pega la dirección del cuestionario en la Pizarra de este portal y proyecta el QR gigante para que los alumnos lo escaneen.",
+
+        faq_section_title: "Preguntas Frecuentes y Solución de Problemas",
+        faq1_q: "¿Cómo instalo el APK en Android si indica \"Aplicación desconocida\"?",
+        faq1_a: "Al tratarse de una distribución educativa fuera de Play Store, Android solicita permiso de seguridad. Pulsa \"Ajustes\" en la ventana emergente y activa \"Permitir la instalación de aplicaciones desconocidas\" para tu navegador.",
+        faq2_q: "¿Cómo desanclo la pantalla en Android si no salgo automáticamente?",
+        faq2_a: "Mantén pulsados simultáneamente los botones Atrás y Aplicaciones recientes (o desliza hacia arriba y mantén pulsado con navegación gestual) e introduce tu PIN o huella del teléfono.",
+        faq3_q: "¿Windows Defender SmartScreen muestra una advertencia azul?",
+        faq3_a: "En Windows 10/11, si SmartScreen muestra aviso de protección, pulsa en \"Más información\" y luego en \"Ejecutar de todas formas\". El ejecutable procede del repositorio oficial de SafeExamBrowser.",
+        faq4_q: "¿Qué permisos solicita macOS para ejecutar Safe Exam Browser?",
+        faq4_a: "Arrastra la app a Aplicaciones. Si Gatekeeper impide la apertura, abre Ajustes del Sistema → Privacidad y Seguridad y pulsa \"Abrir igualmente\" en la sección inferior.",
+
+        footer_text: "Ecosistema Safe Exam Browser para EducaMadrid • Comunidad de Madrid. Diseñado para garantizar la integridad académica y la accesibilidad universal en evaluaciones digitales."
       },
       en: {
-        header_subtitle: "Official Secure Assessment Portal • Moodle Virtual Classroom",
-        nav_downloads: "Downloads",
-        nav_board: "Teacher Board",
-        nav_moodle: "Moodle Setup",
-        nav_faq: "Help & FAQ",
-        quick_board_btn: "Teacher Board",
+        header_subtitle: "Secure Assessment Portal • Moodle Virtual Classroom",
+        nav_install: "Install SEB",
+        nav_board: "Exam Board",
+        nav_help: "Guide & Help",
+        quick_board_btn: "Exam Board",
+
         hero_badge: "Official Safe Exam Browser Ecosystem • EducaMadrid Alliance",
         hero_title_1: "Secure Exams on Moodle",
-        hero_title_2: "Across Every Device",
-        hero_desc: "Full-screen kiosk lockdown, anti-screenshot protection, anti-AI barriers, and cryptographic verification (BEK/CKH) for Windows, macOS, iPadOS, and personal Android (BYOD).",
-        os_detected_label: "Your Detected Device:",
+        hero_title_2: "Across All Devices",
+        hero_desc: "Full-screen kiosk mode, anti-cheating, AI prevention, and cryptographic verification (BEK/CKH) for Windows, macOS, iPadOS, and Android BYOD.",
+        os_detected_label: "Detected Device:",
         download_now_btn: "Download for my device",
-        os_matrix_title: "Official Installers by Operating System",
-        os_matrix_subtitle: "Select your platform to download the certified client compatible with the EducaMadrid SEB protocol.",
-        filter_all: "All Systems",
+        hero_teacher_link: "Teacher? Go to the Exam Board ↓",
+
+        unified_matrix_title: "SEB Installation by Device",
+        unified_matrix_subtitle: "Download the official client and follow 3 simple steps for your desktop, tablet, or smartphone.",
+        filter_all: "All Platforms",
         filter_win: "Windows",
         filter_mac: "macOS",
         filter_ios: "iOS / iPadOS",
         filter_android: "Android BYOD",
-        win_card_desc: "Official Safe Exam Browser SetupBundle.exe installer. Includes Chromium WebView2 and desktop kiosk lockdown service.",
-        win_feat_1: "WebView2 and Chromium engine",
-        win_feat_2: "Browser Exam Key (BEK) computation",
-        win_feat_3: "Shortcut suppression (Alt+Tab, Win, Ctrl+Esc)",
-        download_win_btn: "Download SetupBundle (.exe)",
-        mac_card_desc: "Official Safe Exam Browser .dmg disk image. Built natively for Apple Silicon and Universal Binary.",
-        mac_feat_1: "Apple AAC Assessment Mode",
-        mac_feat_2: "Dock, Spaces & Siri suppression",
-        mac_feat_3: "Cryptographic Apple certificate",
-        download_mac_btn: "Download DMG (.dmg)",
-        ios_card_desc: "Official Safe Exam Browser Alliance distribution via Apple App Store for educational tablets and schools.",
-        ios_feat_1: "Automatic AAC Assessment Mode",
-        ios_feat_2: "Disables multitasking gestures",
-        ios_feat_3: "Native opening of .seb config files",
-        download_ios_btn: "Open on App Store",
-        android_card_desc: "Specialized client engineered to solve the absence of an official Android client. Provides strict Screen Pinning and anti-AI barriers.",
-        android_feat_1: "Screen Pinning & FLAG_SECURE (No screenshots)",
-        android_feat_2: "Anti-AI & clipboard wiping",
-        android_feat_3: "Cryptographic RequestHash header",
-        download_android_btn: "Download Android APK",
-        scan_apk_label: "Scan to Download APK",
-        mobile_install_badge: "Instant Classroom Setup",
-        mobile_install_title: "Browsing on desktop but taking the exam on mobile?",
-        mobile_install_desc: "Point your Android camera at the QR code on the side. The signed APK download will begin immediately without cables or file searching.",
-        board_title: "Teacher Board: Exam Launcher & Converter",
-        board_subtitle: "Converts any EducaMadrid Moodle quiz link to the secure sebs:// protocol and projects a high-contrast QR code for the classroom.",
+
+        // Windows
+        win_version_badge: "v3.10.2 Official",
+        win_subtitle: "Windows 10 / 11 (64-bit / 32-bit / ARM64)",
+        win_download_btn: "Download SEB for Windows (.exe)",
+        win_step1_t: "1. Download installer:",
+        win_step1_d: "Get the official SetupBundle (.exe) package.",
+        win_step2_t: "2. SmartScreen Prompt:",
+        win_step2_d: "If Windows Defender displays a blue alert, click \"More info\" and then \"Run anyway\".",
+        win_step3_t: "3. Ready for exam:",
+        win_step3_d: "Open the exam link or (.seb) file projected by your teacher.",
+
+        // macOS
+        mac_version_badge: "v3.7.1 Official",
+        mac_subtitle: "macOS 10.13+ (Intel & Apple Silicon)",
+        mac_download_btn: "Download SEB for Mac (.dmg)",
+        mac_step1_t: "1. Download DMG image:",
+        mac_step1_d: "Get the official SafeExamBrowser (.dmg) image.",
+        mac_step2_t: "2. Copy to Applications:",
+        mac_step2_d: "Open the DMG and drag the SEB icon to your Applications folder.",
+        mac_step3_t: "3. Gatekeeper permission:",
+        mac_step3_d: "If macOS prompts, click \"Open Anyway\" under System Settings → Privacy & Security.",
+
+        // iOS / iPadOS
+        ios_version_badge: "Official App Store",
+        ios_subtitle: "iPadOS 13+ / iOS 13+ (iPad & iPhone)",
+        ios_download_btn: "Open in App Store",
+        ios_qr_btn: "Scan QR for iPad",
+        ios_step1_t: "1. Install from App Store:",
+        ios_step1_d: "Install Safe Exam Browser for free on your iPad.",
+        ios_step2_t: "2. AAC Assessment Mode:",
+        ios_step2_d: "When launching the exam, tap \"Allow\" on Apple's assessment alert.",
+        ios_step3_t: "3. Unlock upon submission:",
+        ios_step3_d: "Upon quiz submission in Moodle, your iPad will automatically exit kiosk mode.",
+
+        // Android BYOD
+        and_version_badge: "EducaMadrid Official APK",
+        and_subtitle: "Android 8.0+ (Personal Phones & Tablets)",
+        and_download_btn: "Download Android APK",
+        and_qr_btn: "Scan QR for Mobile",
+        and_step1_t: "1. Download APK:",
+        and_step1_d: "Download the APK or scan the QR code using your phone camera.",
+        and_step2_t: "2. Unknown source prompt:",
+        and_step2_d: "If requested by Android, tap Settings and enable \"Allow from this source\".",
+        and_step3_t: "3. Screen Pinning & Exam:",
+        and_step3_d: "Open the app, scan the teacher board QR, and accept screen pinning.",
+
+        modal_close_btn: "Close",
+
+        // Pizarra Docente
+        board_title: "Exam Board: Launcher & QR Code",
+        board_subtitle: "Paste the EducaMadrid Moodle quiz link to generate the secure QR code for classroom projection.",
+        btn_toggle_sec_show: "Configure Teacher Security",
+        btn_toggle_sec_hide: "Minimize Security (Classroom Mode)",
         btn_fullscreen_board: "Fullscreen Beamer Mode",
         lbl_input_url: "EducaMadrid Moodle Quiz URL:",
         btn_update_qr: "Update QR",
-        sec_params_title: "Session Security Parameters",
-        lbl_session_pin: "Exit PIN (4 digits):",
-        lbl_auto_quit_title: "Automatic unlock on submission",
-        lbl_auto_quit_desc: "Quit URL in Moodle without PIN",
-        session_pin_note: "* The PIN is sent encrypted as SHA-256 in the QR and stripped from the URL by the app before loading Moodle.",
-        lbl_active_pin: "Active Session PIN:",
         lbl_sebs_ready: "Generated SEBS Protocol:",
         btn_copy: "Copy",
         btn_test_seb: "Launch in Local SEB",
-        teacher_pin_heading: "Teacher Emergency Unlock PIN",
-        teacher_pin_desc: "If a student loses window focus or the device locks upon violation, enter the default teacher PIN on their screen:",
-        lbl_default_pin: "Master PIN:",
-        projector_title: "Scan to Begin Your Secure Exam",
-        projector_desc: "Open the Safe Exam Browser client or the EducaMadrid SEB app and point your camera at this code.",
-        security_notice: "Active Cryptographic Computation (X-SafeExamBrowser-RequestHash)",
-        security_notice_sub: "Scanning this code will lock the browser into kiosk mode, disabling other apps until the quiz is submitted.",
-        moodle_guide_title: "How to Configure the Exam in EducaMadrid Moodle",
-        moodle_guide_subtitle: "Step-by-step guide for teachers in virtual classrooms with Safe Exam Browser enabled.",
-        step1_title: "Quiz Settings",
-        step1_desc: "In your EducaMadrid course, open the Quiz and click Edit settings. Expand the Safe Exam Browser section.",
-        step2_title: "Enable SEB Mode",
-        step2_desc: "Under \"Require the use of Safe Exam Browser\", select \"Yes - Configure manually\" or \"Yes - Use existing SEB config\".",
-        step3_title: "Cryptographic Keys (BEK)",
-        step3_desc: "For strict security, copy the SHA-256 Browser Exam Key or Config Key so only authorized SEB clients can load the exam.",
-        step4_title: "Projection or Link",
-        step4_desc: "Paste the URL into the Teacher Board of this portal and project the QR code or share the .seb configuration file with students.",
-        faq_title: "Frequently Asked Questions & Troubleshooting",
-        faq_subtitle: "Solutions to common situations during exams across EducaMadrid schools.",
-        faq1_q: "How do I install the APK on Android if it says \"Unknown app\"?",
-        faq1_a: "Because this is an educational school package outside the Play Store, Android prompts for permission. Tap \"Settings\" in the prompt and toggle \"Allow from this source\" for your browser.",
-        faq2_q: "How do I exit the pinned screen on Android when finished?",
-        faq2_a: "To unpin in Android, press and hold the Back and Recent Apps buttons simultaneously (or swipe up and hold if using gesture navigation), then enter your personal device PIN/pattern.",
-        faq3_q: "Windows Defender SmartScreen shows a warning?",
-        faq3_a: "On Windows 10/11, if SmartScreen presents a blue warning card, click \"More info\" and then \"Run anyway\". The installer comes directly from the official SafeExamBrowser release.",
-        faq4_q: "What permissions does macOS require for SEB?",
-        faq4_a: "macOS requires moving the app to the Applications folder. If Gatekeeper alerts you, go to System Settings -> Privacy & Security and click \"Open Anyway\".",
-        modal_ios_title: "Install SEB on iPad / iPhone",
-        modal_ios_desc: "Point your iPad camera here to open Safe Exam Browser directly in Apple's App Store.",
-        nav_steps: "Installation Steps",
-        install_badge: "Official Step-by-Step",
-        install_guide_title: "Steps to Install SEB on Your Device",
-        install_guide_subtitle: "Follow this 3-step guide for your computer, tablet, or mobile phone to reach your exam smoothly.",
-        win_step1_t: "Download installer:",
-        win_step1_d: "Click Download SetupBundle (.exe) in the section above.",
-        win_step2_t: "Installer & SmartScreen:",
-        win_step2_d: "Open the downloaded file. If Windows Defender shows a blue alert, click \"More info\" and then \"Run anyway\".",
-        win_step3_t: "Ready for your exam:",
-        win_step3_d: "Click \"Launch in Local SEB\" on the board or open the .seb file provided by your teacher.",
-        btn_view_win_dl: "Go to Windows Download →",
-        mac_step1_t: "Download DMG image:",
-        mac_step1_d: "Get the SafeExamBrowser-3.7.1.dmg disk image from the official button.",
-        mac_step2_t: "Copy to Applications:",
-        mac_step2_d: "Open the DMG and drag the SEB icon to your Mac's Applications folder.",
-        mac_step3_t: "Gatekeeper permission:",
-        mac_step3_d: "Open the app once. If macOS blocks it, go to System Settings → Privacy & Security and click \"Open Anyway\".",
-        btn_view_mac_dl: "Go to Mac Download →",
-        ios_step1_t: "Install from App Store:",
-        ios_step1_d: "Tap Open on App Store or scan the iPad-specific QR code with your camera.",
-        ios_step2_t: "AAC Assessment Mode:",
-        ios_step2_d: "Upon launching the exam, iOS will prompt to lock down your iPad. Tap \"Allow\".",
-        ios_step3_t: "Submission & Exit:",
-        ios_step3_d: "When you finish and submit your quiz on Moodle, the iPad automatically exits locked mode.",
-        btn_view_ios_qr: "View iPad QR →",
-        and_step1_t: "Direct APK download:",
-        and_step1_d: "Scan the black QR code with your mobile camera or tap Download APK.",
-        and_step2_t: "Allow Unknown App:",
-        and_step2_d: "If Android flags \"unknown app\", tap Settings and toggle \"Allow from this source\" for your browser.",
-        and_step3_t: "Pinning & Exam:",
-        and_step3_d: "Open EducaMadrid SEB, tap Scan Exam QR towards the teacher board, and accept Screen Pinning.",
-        btn_view_and_qr: "Scan Download QR →",
-        btn_toggle_sec_show: "Configure Teacher Security",
-        btn_toggle_sec_hide: "Minimize Security (Classroom Mode)",
+
         sec_panel_title: "Session Security & Teacher PIN",
         sec_status_hidden: "Hidden from Students",
         sec_status_visible: "Visible",
         sec_action_show: "Expand",
         sec_action_hide: "Minimize",
+        classroom_mode_notice: "Protected Classroom Mode: Students can view and scan the QR without seeing the exit PIN or master credentials.",
         sec_sub_title: "Session Parameters",
-        btn_minimize_sec: "Minimize Security (Classroom Mode)",
-        classroom_mode_notice: "Protected Classroom Mode: Students can view and scan the QR code without seeing the exit PIN or teacher master keys.",
-        footer_legal: "Compatible with Safe Exam Browser Open Source Alliance (ETH Zürich / SEB Consortium) and Moodle Virtual Classroom."
+        lbl_session_pin: "Exit PIN (4 digits):",
+        lbl_auto_quit_title: "Automatic unlock on Moodle submission",
+        lbl_auto_quit_desc: "Allows clean exit without requiring teacher PIN once the quiz is submitted",
+        session_pin_note: "* The PIN is sent encrypted as SHA-256 in the QR and stripped from the URL by the app before loading Moodle.",
+        lbl_active_pin: "Active Session PIN:",
+        teacher_pin_heading: "🔑 Teacher Emergency Master PIN",
+        teacher_pin_desc: "If a student loses window focus or the device locks upon violation, enter the master PIN on their screen:",
+        lbl_default_pin: "Master PIN:",
+
+        projector_title: "Scan to Begin Your Exam",
+        projector_desc: "Open Safe Exam Browser or the EducaMadrid SEB app and point your camera at this code.",
+        security_notice: "Full-Screen Kiosk Mode & Cryptographic Verification Active",
+
+        // Guía Moodle & FAQ
+        guide_faq_title: "Teacher Guide & Frequently Asked Questions",
+        guide_faq_subtitle: "Everything required to configure quizzes in Virtual Classrooms and resolve student queries.",
+        moodle_section_title: "Configuration in EducaMadrid Moodle (4 Steps)",
+        step1_title: "1. Quiz Settings",
+        step1_desc: "In your Virtual Classroom course, open the Quiz and click Edit settings. Expand the Safe Exam Browser section.",
+        step2_title: "2. Enable SEB Mode",
+        step2_desc: "Under \"Require the use of Safe Exam Browser\", select \"Yes - Configure manually\" or \"Yes - Use existing SEB config\".",
+        step3_title: "3. Cryptographic Keys (Optional)",
+        step3_desc: "For strict security, add the Browser Exam Key (BEK) or Config Key hash.",
+        step4_title: "4. Project QR Code",
+        step4_desc: "Paste the quiz URL onto this portal's Board and project the giant QR code for students to scan.",
+
+        faq_section_title: "Frequently Asked Questions & Troubleshooting",
+        faq1_q: "How do I install the APK on Android if it says \"Unknown app\"?",
+        faq1_a: "Because this is an educational school package outside the Play Store, Android prompts for permission. Tap \"Settings\" in the prompt and toggle \"Allow from this source\" for your browser.",
+        faq2_q: "How do I unpin the screen in Android if not auto-exited?",
+        faq2_a: "Press and hold the Back and Recent Apps buttons simultaneously (or swipe up and hold if using gesture navigation), then enter your personal device PIN/pattern.",
+        faq3_q: "Windows Defender SmartScreen shows a blue warning?",
+        faq3_a: "On Windows 10/11, if SmartScreen presents a blue warning card, click \"More info\" and then \"Run anyway\". The installer comes directly from the official SafeExamBrowser release.",
+        faq4_q: "What permissions does macOS require for SEB?",
+        faq4_a: "Drag the app to Applications. If Gatekeeper alerts you, go to System Settings → Privacy & Security and click \"Open Anyway\".",
+
+        footer_text: "Safe Exam Browser ecosystem for EducaMadrid • Community of Madrid. Designed for academic integrity and universal accessibility in digital assessments."
       }
     };
 
@@ -1318,18 +1066,18 @@
       currentLang = lang;
       localStorage.setItem('seb_portal_lang', lang);
 
-      // Actualizar botones de idioma en header
+      // Actualizar botones de idioma
       const btnEs = document.getElementById('langBtnEs');
       const btnEn = document.getElementById('langBtnEn');
       if (lang === 'es') {
-        btnEs.className = "px-2.5 py-1 rounded-lg transition-all bg-brand-600 text-white shadow-sm flex items-center gap-1.5";
+        btnEs.className = "px-2.5 py-1 rounded-lg transition-all bg-brand-600 text-white shadow-sm flex items-center gap-1.5 font-bold";
         btnEn.className = "px-2.5 py-1 rounded-lg transition-all text-slate-300 hover:text-white flex items-center gap-1.5";
       } else {
-        btnEn.className = "px-2.5 py-1 rounded-lg transition-all bg-brand-600 text-white shadow-sm flex items-center gap-1.5";
+        btnEn.className = "px-2.5 py-1 rounded-lg transition-all bg-brand-600 text-white shadow-sm flex items-center gap-1.5 font-bold";
         btnEs.className = "px-2.5 py-1 rounded-lg transition-all text-slate-300 hover:text-white flex items-center gap-1.5";
       }
 
-      // Aplicar textos
+      // Reemplazar textos con data-i18n
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
@@ -1337,38 +1085,18 @@
         }
       });
 
-      // Actualizar textos dinámicos del panel de seguridad según estado
-      const badge = document.getElementById('secPanelBadge');
-      const actionText = document.getElementById('secPanelToggleAction');
-      const btnSecText = document.getElementById('btnSecText');
-      if (typeof isSecurityPanelVisible !== 'undefined') {
-        if (isSecurityPanelVisible) {
-          if (badge) badge.textContent = translations[lang].sec_status_visible;
-          if (actionText) actionText.textContent = translations[lang].sec_action_hide;
-          if (btnSecText) btnSecText.textContent = translations[lang].btn_toggle_sec_hide;
-        } else {
-          if (badge) badge.textContent = translations[lang].sec_status_hidden;
-          if (actionText) actionText.textContent = translations[lang].sec_action_show;
-          if (btnSecText) btnSecText.textContent = translations[lang].btn_toggle_sec_show;
-        }
-      }
-
-      // Actualizar detección de SO con textos en el idioma
-      detectAndApplyOS();
+      // Actualizar tarjeta detectada según idioma
+      updateDetectedOsCard();
     }
 
-    // 1. Detección Inteligente del Repositorio GitHub para APK Android
+    // 2. ENLACES OFICIALES DINÁMICOS
     function getRepoCoordinates() {
-      const hostname = window.location.hostname;
-      const pathname = window.location.pathname.split('/').filter(Boolean);
-
-      if (hostname.endsWith('.github.io') && pathname.length >= 1) {
-        return { user: hostname.split('.')[0], repo: pathname[0] };
-      }
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('repo')) {
-        const parts = urlParams.get('repo').split('/');
-        if (parts.length === 2) return { user: parts[0], repo: parts[1] };
+      const host = window.location.hostname;
+      const pathname = window.location.pathname;
+      if (host.endsWith('github.io')) {
+        const user = host.split('.')[0];
+        const repo = pathname.split('/')[1] || 'SEB';
+        return { user, repo };
       }
       return { user: 'jmgurpegui', repo: 'SEB' };
     }
@@ -1383,30 +1111,27 @@
     const btnDownloadAndroid = document.getElementById('btnDownloadAndroid');
     if (btnDownloadAndroid) btnDownloadAndroid.href = androidApkUrl;
 
-    // 2. Detección de Sistema Operativo del Usuario
+    // 3. DETECCIÓN AUTOMÁTICA DE SISTEMA OPERATIVO
     function detectOS() {
       const userAgent = window.navigator.userAgent.toLowerCase();
       const platform = (window.navigator.userAgentData?.platform || window.navigator.platform || '').toLowerCase();
 
-      if (/ipad|iphone|ipod/.test(userAgent) || (platform.includes('mac') && navigator.maxTouchPoints > 1)) {
+      if (/iphone|ipad|ipod/.test(userAgent) || (platform === 'macintel' && navigator.maxTouchPoints > 1)) {
         return 'ios';
       }
       if (/android/.test(userAgent)) {
         return 'android';
       }
-      if (/win/.test(platform) || /windows/.test(userAgent)) {
-        return 'windows';
-      }
-      if (/mac/.test(platform) || /macintosh/.test(userAgent)) {
+      if (/macintosh|mac os x/.test(userAgent) || platform.includes('mac')) {
         return 'mac';
       }
-      if (/linux/.test(platform)) {
-        return 'android';
+      if (/windows|win32|win64/.test(userAgent) || platform.includes('win')) {
+        return 'windows';
       }
       return 'windows';
     }
 
-    function detectAndApplyOS() {
+    function updateDetectedOsCard() {
       const os = detectOS();
       const titleEl = document.getElementById('detectedOsTitle');
       const subtextEl = document.getElementById('detectedOsSubtext');
@@ -1414,26 +1139,28 @@
       const iconEl = document.getElementById('detectedOsIcon');
       const isEn = currentLang === 'en';
 
+      if (!titleEl || !btnEl || !iconEl) return;
+
       if (os === 'windows') {
-        titleEl.textContent = isEn ? "Windows 10 / 11 (64-bit & ARM)" : "Windows 10 / 11 (64-bit y ARM)";
-        subtextEl.textContent = isEn ? "Official Safe Exam Browser v3.10.2 SetupBundle" : "Safe Exam Browser v3.10.2 Oficial SetupBundle";
+        titleEl.textContent = "Windows (10 / 11)";
+        subtextEl.textContent = isEn ? "SEB Client v3.10.2 SetupBundle (.exe) Certified" : "Cliente SEB v3.10.2 SetupBundle (.exe) Certificado";
         btnEl.href = winSetupUrl;
         btnEl.target = "_blank";
         iconEl.innerHTML = `<svg class="w-7 h-7 text-blue-300" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/></svg>`;
       } else if (os === 'mac') {
-        titleEl.textContent = isEn ? "macOS (Apple Silicon & Intel)" : "macOS (Apple Silicon e Intel)";
-        subtextEl.textContent = isEn ? "Official Safe Exam Browser v3.7.1 DMG Image" : "Safe Exam Browser v3.7.1 Oficial en Disco DMG";
+        titleEl.textContent = "macOS (Apple Mac)";
+        subtextEl.textContent = isEn ? "SEB Client v3.7.1 DMG Image (Intel & Apple Silicon)" : "Cliente SEB v3.7.1 Imagen DMG (Intel y Apple Silicon)";
         btnEl.href = macDmgUrl;
         btnEl.target = "_blank";
         iconEl.innerHTML = `<svg class="w-7 h-7 text-slate-200" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>`;
       } else if (os === 'ios') {
-        titleEl.textContent = isEn ? "Apple iPadOS / iOS" : "Apple iPadOS / iOS";
-        subtextEl.textContent = isEn ? "Official Safe Exam Browser on App Store" : "Safe Exam Browser Oficial en Apple App Store";
+        titleEl.textContent = "iOS / iPadOS (iPad)";
+        subtextEl.textContent = isEn ? "Official Safe Exam Browser from Apple App Store" : "Safe Exam Browser oficial desde Apple App Store";
         btnEl.href = iosAppStoreUrl;
         btnEl.target = "_blank";
         iconEl.innerHTML = `<svg class="w-7 h-7 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>`;
       } else if (os === 'android') {
-        titleEl.textContent = isEn ? "Android (Phone / Tablet)" : "Android (Móvil o Tablet)";
+        titleEl.textContent = "Android (Móvil / Tablet BYOD)";
         subtextEl.textContent = isEn ? "EducaMadrid SEB Client v3.7.1 Signed APK" : "Cliente EducaMadrid SEB v3.7.1 APK Firmado";
         btnEl.href = androidApkUrl;
         btnEl.target = "_self";
@@ -1441,7 +1168,7 @@
       }
     }
 
-    // 3. Filtrado de Tarjetas por Sistema
+    // 4. FILTRADO DE TARJETAS POR PLATAFORMA
     function filterPlatform(platform) {
       const cards = {
         windows: document.getElementById('cardWindows'),
@@ -1460,14 +1187,17 @@
 
       // Resetear clases de botones
       Object.values(buttons).forEach(btn => {
-        btn.className = "px-4 py-2 rounded-xl transition-all hover:text-slate-900";
+        if (btn) btn.className = "px-4 py-2 rounded-xl transition-all hover:text-slate-900";
       });
-      buttons[platform].className = "px-4 py-2 rounded-xl transition-all tab-active shadow-sm font-bold";
+      if (buttons[platform]) {
+        buttons[platform].className = "px-4 py-2 rounded-xl transition-all tab-active shadow-sm font-bold";
+      }
 
       if (platform === 'all') {
-        Object.values(cards).forEach(c => c.classList.remove('hidden'));
+        Object.values(cards).forEach(c => c && c.classList.remove('hidden'));
       } else {
         Object.keys(cards).forEach(key => {
+          if (!cards[key]) return;
           if (key === platform) {
             cards[key].classList.remove('hidden');
           } else {
@@ -1477,24 +1207,9 @@
       }
     }
 
-    // 4. Generación de Códigos QR
-    let qrAndroidInstance = null;
+    // 5. CONVERSIÓN Y GENERADOR QR DE LA PIZARRA
     let qrProjectorInstance = null;
-    let qrIosModalInstance = null;
-
-    function renderAndroidDownloadQr() {
-      const container = document.getElementById('qrDirectAndroidDownload');
-      if (!container) return;
-      container.innerHTML = '';
-      qrAndroidInstance = new QRCode(container, {
-        text: androidApkUrl,
-        width: 170,
-        height: 170,
-        colorDark: "#06183b",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
+    let modalQrInstance = null;
 
     function convertToSebs(url) {
       let raw = (url || '').trim();
@@ -1506,7 +1221,7 @@
       return 'sebs://' + raw;
     }
 
-    // Función criptográfica pura SHA-256 (garantiza hash idéntico en file://, http:// y https://)
+    // Pure JS SHA-256 fallback (funciona de forma idéntica en file://, http:// y https://)
     function pureJsSha256(ascii) {
       function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
       const mathPow = Math.pow;
@@ -1553,7 +1268,6 @@
       return [h0, h1, h2, h3, h4, h5, h6, h7].map(h => (h >>> 0).toString(16).padStart(8, '0')).join('');
     }
 
-    // Cálculo criptográfico SHA-256 en navegador para el PIN de sesión (WebCrypto API con pure JS fallback)
     async function sha256Hex(text) {
       if (window.crypto && crypto.subtle) {
         try {
@@ -1561,9 +1275,7 @@
           const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
           const hashArray = Array.from(new Uint8Array(hashBuffer));
           return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        } catch (e) {
-          // Continuar al fallback de pure JS
-        }
+        } catch (e) {}
       }
       return pureJsSha256(text);
     }
@@ -1605,14 +1317,14 @@
       if (!container) return;
       container.innerHTML = '';
 
-      const size = window.innerWidth > 640 ? 260 : 200;
+      const size = window.innerWidth > 640 ? 260 : 220;
       qrProjectorInstance = new QRCode(container, {
         text: fullSebsUrl,
         width: size,
         height: size,
         colorDark: "#000000",
         colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.L // Nivel L óptimo para URLs con alta densidad de caracteres
+        correctLevel: QRCode.CorrectLevel.L
       });
     }
 
@@ -1630,7 +1342,7 @@
       processExamLink();
     }
 
-    // 5. Control de Visibilidad del Panel de Seguridad Docente (Modo Aula)
+    // 6. CONTROL PANEL DE SEGURIDAD DOCENTE (MODO AULA)
     let isSecurityPanelVisible = false;
 
     function toggleSecurityPanel() {
@@ -1663,7 +1375,7 @@
           badge.textContent = isEn ? "Hidden from Students" : "Oculto para Alumnos";
           badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60";
         }
-        if (actionText) actionText.textContent = isEn ? "Expand" : "Desplegar";
+        if (actionText) actionText.textContent = isEn ? "Desplegar" : "Desplegar";
         if (chevron) chevron.classList.remove('rotate-180');
         if (btnSecText) btnSecText.textContent = isEn ? "Configure Teacher Security" : "Configurar Seguridad Docente";
         if (btnSecIcon) btnSecIcon.textContent = "🔒";
@@ -1692,41 +1404,64 @@
       }
     }
 
-    function scrollToQrAndroid() {
-      document.getElementById('sectionAndroidQr').scrollIntoView({ behavior: 'smooth' });
-    }
+    // 7. MODAL UNIFICADO PARA CÓDIGOS QR DE INSTALACIÓN
+    function showDownloadQrModal(type) {
+      const modal = document.getElementById('modalDownloadQr');
+      const icon = document.getElementById('modalQrIcon');
+      const title = document.getElementById('modalQrTitle');
+      const desc = document.getElementById('modalQrDesc');
+      const directBtn = document.getElementById('modalQrDirectLink');
+      const container = document.getElementById('modalQrContainer');
+      const isEn = currentLang === 'en';
 
-    // Modal QR para iPad
-    function showIosQrModal() {
-      const modal = document.getElementById('modalIosQr');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      const container = document.getElementById('qrIosModalContainer');
+      let targetUrl = '';
+
+      if (type === 'android') {
+        targetUrl = androidApkUrl;
+        icon.className = "w-12 h-12 mx-auto rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center";
+        icon.innerHTML = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.1 12 8.1s-3.5902.3126-5.1367.85l-2.022-3.503a.416.416 0 00-.5676-.1523.416.416 0 00-.1523.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.775h24c-.3432-4.1161-2.6889-7.5883-6.1185-9.4536"/></svg>`;
+        title.textContent = isEn ? "Install SEB on Android (APK)" : "Instalar SEB en Android (APK)";
+        desc.textContent = isEn ? "Scan this code with your mobile camera to download the official signed APK directly." : "Apunta con la cámara de tu móvil para descargar directamente el archivo APK oficial firmado.";
+        directBtn.textContent = isEn ? "Download APK File Directly" : "Descargar Archivo APK Directo";
+        directBtn.href = androidApkUrl;
+        directBtn.className = "w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95";
+      } else {
+        targetUrl = iosAppStoreUrl;
+        icon.className = "w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center";
+        icon.innerHTML = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.64-.78 1.08-1.87.96-2.96-1 .04-2.15.65-2.82 1.43-.59.69-1.12 1.8-0.98 2.87 1.12.09 2.2-.56 2.84-1.34z"/></svg>`;
+        title.textContent = isEn ? "Install SEB on iPad (App Store)" : "Instalar SEB en iPad (App Store)";
+        desc.textContent = isEn ? "Scan this code with your iPad camera to open Safe Exam Browser in Apple's App Store." : "Apunta con la cámara de tu iPad para abrir directamente Safe Exam Browser en la App Store de Apple.";
+        directBtn.textContent = isEn ? "Open in Apple App Store" : "Abrir en Apple App Store";
+        directBtn.href = iosAppStoreUrl;
+        directBtn.className = "w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition transform active:scale-95";
+      }
+
       container.innerHTML = '';
-      qrIosModalInstance = new QRCode(container, {
-        text: iosAppStoreUrl,
+      modalQrInstance = new QRCode(container, {
+        text: targetUrl,
         width: 170,
         height: 170,
-        colorDark: "#1e1b4b",
+        colorDark: "#06183b",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.M
       });
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
-    function closeIosQrModal() {
-      const modal = document.getElementById('modalIosQr');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+    function closeDownloadQrModal() {
+      const modal = document.getElementById('modalDownloadQr');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
     }
 
-    // Inicialización al cargar la ventana
+    // 8. INICIALIZACIÓN
     window.addEventListener('DOMContentLoaded', () => {
-      // Idioma guardado
       const savedLang = localStorage.getItem('seb_portal_lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
       setLanguage(savedLang);
-
-      renderAndroidDownloadQr();
       processExamLink();
     });
   </script>
