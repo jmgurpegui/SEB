@@ -76,6 +76,12 @@ class MainActivity : AppCompatActivity() {
     private var currentBrowserExamKey: String = SebCryptoUtils.DEFAULT_BROWSER_EXAM_KEY
     private var currentConfigKeyHash: String = SebCryptoUtils.DEFAULT_CONFIG_KEY_HASH
 
+    // Control de transición para confirmación de Screen Pinning (evita falsos positivos en el diálogo del sistema Android)
+    private var isStartingLockTask: Boolean = false
+    private val lockTaskConfirmationTimeout = Runnable {
+        isStartingLockTask = false
+    }
+
     // Bucle de supervisión continua de Screen Pinning (cada 1000 ms)
     private val lockTaskHandler = Handler(Looper.getMainLooper())
     private val lockTaskCheckRunnable = object : Runnable {
@@ -118,6 +124,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Limpieza preventiva y silenciosa del portapapeles al iniciar la app
+        clearClipboard()
 
         setupBackPressHandler()
         setupListeners()
@@ -222,9 +231,25 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnPinScreenNow.setOnClickListener {
             try {
+                isStartingLockTask = true
                 startLockTask()
+                lockTaskHandler.removeCallbacks(lockTaskConfirmationTimeout)
+                lockTaskHandler.postDelayed(lockTaskConfirmationTimeout, 3500)
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+
+        binding.btnClearSession.setOnClickListener {
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookies {
+                cookieManager.flush()
+                binding.examWebView.clearCache(true)
+                Toast.makeText(
+                    this@MainActivity,
+                    "Sesión de EducaMadrid cerrada correctamente",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -352,6 +377,11 @@ class MainActivity : AppCompatActivity() {
                     super.onPageFinished(view, url)
                     injectAntiAiScript(view)
                     url?.let { checkAutoQuitProgression(it) }
+
+                    // Persistir cookies de autenticación de Moodle EducaMadrid en almacenamiento permanente
+                    try {
+                        CookieManager.getInstance().flush()
+                    } catch (_: Exception) {}
                 }
             }
         }
@@ -438,6 +468,7 @@ class MainActivity : AppCompatActivity() {
 
         isExamActive = true
         isExitingWithTeacherPin = false
+        isStartingLockTask = true
 
         binding.btnAutoQuit.visibility = View.GONE
         binding.layoutHome.visibility = View.GONE
@@ -447,12 +478,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.etExamUrl.setText(cleanUrl)
 
+        // Limpieza preventiva y silenciosa del portapapeles al entrar en el examen
+        clearClipboard()
+
         // Solicita el anclaje de pantalla (Screen Pinning / Kiosk)
         try {
             startLockTask()
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        // Periodo de gracia para que el alumno acepte el diálogo de confirmación del sistema Android sin disparar infracción
+        lockTaskHandler.removeCallbacks(lockTaskConfirmationTimeout)
+        lockTaskHandler.postDelayed(lockTaskConfirmationTimeout, 3500)
 
         // Carga inicial con cabeceras SEB y URL limpia
         loadUrlWithSebHeaders(cleanUrl)
@@ -464,22 +502,25 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Comprueba activamente el estado de fijación de pantalla (Screen Pinning).
-     * Si el alumno desancló o rechazó el anclaje, oculta el WebView y muestra pantalla roja.
+     * Si el alumno desancló o rechazó el anclaje, oculta el WebView y muestra pantalla de pausa.
      */
     private fun verifyScreenPinningState() {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val lockMode = activityManager.lockTaskModeState
         val isPinned = (lockMode != ActivityManager.LOCK_TASK_MODE_NONE)
 
-        if (!isPinned) {
-            if (binding.layoutInfractionScreen.visibility != View.VISIBLE) {
-                binding.examWebView.visibility = View.GONE
-                binding.layoutPausedScreen.visibility = View.VISIBLE
-            }
-        } else {
+        if (isPinned) {
+            isStartingLockTask = false
+            lockTaskHandler.removeCallbacks(lockTaskConfirmationTimeout)
             if (binding.layoutInfractionScreen.visibility != View.VISIBLE) {
                 binding.layoutPausedScreen.visibility = View.GONE
                 binding.examWebView.visibility = View.VISIBLE
+            }
+        } else {
+            // Solo pausar si ha expirado la ventana de confirmación del sistema Android
+            if (!isStartingLockTask && binding.layoutInfractionScreen.visibility != View.VISIBLE) {
+                binding.examWebView.visibility = View.GONE
+                binding.layoutPausedScreen.visibility = View.VISIBLE
             }
         }
     }
@@ -489,7 +530,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (isExamActive && !isExitingWithTeacherPin && !isTeacherDialogShowing) {
+        if (isExamActive && !isExitingWithTeacherPin && !isTeacherDialogShowing && !isStartingLockTask) {
             if (!hasFocus) {
                 registerInfraction("Pérdida de foco / Superposición o cambio de ventana")
             }
@@ -501,7 +542,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        if (isExamActive && !isExitingWithTeacherPin && !isTeacherDialogShowing) {
+        if (isExamActive && !isExitingWithTeacherPin && !isTeacherDialogShowing && !isStartingLockTask) {
             registerInfraction("Paso a segundo plano o cambio de aplicación")
         }
     }
@@ -525,11 +566,16 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Limpia completamente el portapapeles del dispositivo.
+     * En Android 9+ (API 28+) usa clearPrimaryClip() para evitar advertencias de sistema en Android 12+.
      */
     private fun clearClipboard() {
         try {
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                clipboard.clearPrimaryClip()
+            } else {
+                clipboard.setPrimaryClip(ClipData.newPlainText("", ""))
+            }
         } catch (_: Exception) {}
     }
 
@@ -627,12 +673,13 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Salida automática al entregar el examen (auto_quit activo):
-     * Libera Screen Pinning, borra cookies de sesión y cierra la app sin pedir PIN.
+     * Libera Screen Pinning, guarda cookies de sesión en disco y cierra la app sin pedir PIN.
      */
     private fun triggerAutoQuitExit() {
         isExitingWithTeacherPin = true
         isExamActive = false
         lockTaskHandler.removeCallbacks(lockTaskCheckRunnable)
+        lockTaskHandler.removeCallbacks(lockTaskConfirmationTimeout)
 
         try {
             stopLockTask()
@@ -641,10 +688,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
+            // Persistir cookies para mantener la sesión de EducaMadrid en futuros exámenes
             val cookieManager = CookieManager.getInstance()
-            cookieManager.removeAllCookies(null)
             cookieManager.flush()
-            binding.examWebView.clearCache(true)
             binding.examWebView.loadUrl("about:blank")
         } catch (_: Exception) {}
 
@@ -673,6 +719,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         lockTaskHandler.removeCallbacks(lockTaskCheckRunnable)
+        lockTaskHandler.removeCallbacks(lockTaskConfirmationTimeout)
         super.onDestroy()
     }
 }
